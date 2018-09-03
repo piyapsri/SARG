@@ -46,3 +46,15 @@ This project contains the following modules.
   <li>Pillow==5.2.0</li>
 </ul>
 
+<h2>Creating Super User Django Admin</h2>
+
+<pre>
+sudo docker exec -it sarg sh
+python manage.py createsuperuser 
+</pre>
+
+<h2>Creating Tables, Views and Functions on Mysql</h2>
+<pre>
+sudo docker exec -it sarg sh
+python manage.py createsuperuser 
+</pre>
