@@ -1,0 +1,1990 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+   <head>
+      {% include "sarg/include/header.html" %}
+      <title>Consulta x Grupo Despesa</title>  
+      <style>
+         #datatable-responsive tbody tr td{
+         vertical-align: middle !important;
+         }
+      </style>
+   </head>
+   <body class="nav-md">
+      <div class="container body">
+         <div class="main_container">
+            {% include "sarg/include/left.html" %}
+         </div>
+      </div>
+      <!-- top navigation -->
+      {% include "sarg/include/top_navegation.html" %}
+      <!-- /top navigation -->
+      <!-- page content -->
+      <div class="right_col" role="main">
+         <!-- top tiles -->
+  <!--       {% include "sarg/include/top_titles.html" %} -->
+         <!-- /top tiles -->
+		<div class="col-md-12 col-sm-12 col-xs-12">
+			<div class="x_panel">
+				<div class="x_title">
+					<h3>Consulta x Grupo Despesa<small> Última atualização: {{data}} {{A}} </small></h3>
+					<div class="clearfix"></div>                 
+				</div>                                           
+            <div class="x_content">                           
+            
+               <div class="col-xs-12 col-lg-6">
+            
+                  <div class="x_panel" style="background-color: rgba(26,187,156, .8); color: rgb(255,255,255); min-height: 150px;">
+                  
+                     <div class="x_title">
+                        <ul class="nav navbar-right panel_toolbox">
+                           <li class="dropdown">
+                              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><span style="font-size:20px; color: rgb(255,255,255) !important;"><i class="fa fa-search-plus"></i></span></a>
+                                    <ul class="dropdown-menu dropdown-menu-right " role="menu" style="postion: relative;left: auto;">	
+                                       <li><a data-toggle="modal" data-target="#myModalBEN1">Realizadas no Mês</a></li>
+                                       <li><a data-toggle="modal" data-target="#myModalBEN2">Histórico no ano</a></li>
+                                       <li><a data-toggle="modal" data-target="#myModalBEN3">Previsto x Realizado no Ano</a></li>
+                                    </ul>
+                           </li>				  
+                           <li><a class="close-link"><span style="font-size:20px"><span style="font-size:20px; color: rgb(255,255,255) !important;"><i class="fa fa-close"></i></span></a></li>
+                        </ul>					
+                        <div class="icon"><h1> <i class="fa fa-credit-card"> Benefícios</h1></i></div>
+                        <div class="clearfix"></div>                 
+                     </div>                         
+                     
+                     <div class="x_content">   
+                     
+                        <div class="row">
+                           <div class="col-xs-12">
+                              <i class="fa fa-gavel" style="position: absolute; top:0; left:0; font-size: 150px; color: rgba(255,255,255,.1)"></i>
+                              <h3 style="display: inline-block;"></h3>
+                           
+                              <div style="margin-top: 20px; font-weight: bold; clear: both; text-align: center;font-size: 180%; line-height: 60%;">
+                                 R$ {{ORC_BEN_PRE_MES|default:"0"|floatformat:0}} <span style="font-size: 40%">X</span> R$ {{TOT_ORC_BEN_REL_MES|default:"0"|floatformat:0}}<br>
+                                 <span style="font-size: 50%">Previsto X Realizado no mês</span>
+                              </div>
+                           
+                              <div style="margin-top: 15px; font-weight: bold; clear: both; text-align: center;font-size: 180%; line-height: 60%;">
+                                 R$ {{ORC_BEN_PRE_ANO|default:"0"|floatformat:0}} <span style="font-size: 40%">X</span> R$ {{TOT_ORC_BEN_REL_ANO|default:"0"|floatformat:0}}<br>
+                                 <span style="font-size: 50%">Previsto X Realizado no ano</span>
+                              </div>
+                           
+                              <div style="margin-top: 20px; clear: both;">
+                              </div>
+
+                              <!-- Modal -->
+                              <div class="modal fade" id="myModalBEN1" role="dialog">
+                                 <div class="modal-dialog">
+                                 
+                                    <!-- Modal content-->
+                                    <div class="modal-content">
+                                       <div class="modal-body">
+                                          <div id="containerBEN1" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+                                       </div>
+                                       <div class="modal-footer">
+                                       <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+                                       </div>
+                                    </div>
+                                    <!-- Modal content-->
+                                 
+                                 </div>
+                              </div>
+                              <!-- End Modal -->
+                              
+                              <!-- Modal -->
+                              <div class="modal fade" id="myModalBEN2" role="dialog">
+                                 <div class="modal-dialog">
+                                 
+                                    <!-- Modal content-->
+                                    <div class="modal-content">
+                                       <div class="modal-body">
+                                          <div id="containerBEN2" ></div>
+                                       </div>
+                                       <div class="modal-footer">
+                                       <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+                                       </div>
+                                    </div>
+                                    <!-- Modal content-->
+                                 
+                                 </div>
+                              </div>
+                              <!-- End Modal -->  
+                              
+                              <!-- Modal -->
+                              <div class="modal fade" id="myModalBEN3" role="dialog">
+                                 <div class="modal-dialog modal-lg">
+                                 
+                                    <!-- Modal content-->
+                                    <div class="modal-content">
+                                       <div class="modal-header">
+                                       <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                       <h4 class="modal-title">Previsto x Realizado Acumulado para Benefícios no Ano</h4>
+                                       </div>
+                                       <div class="modal-body">
+                                          <div id="containerBEN3" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+                                       </div>
+                                       <div class="modal-footer">
+                                       <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+                                       </div>
+                                    </div>
+                                    <!-- Modal content-->
+                                 
+                                 </div>
+                              </div>
+                              <!-- End Modal -->  
+                              
+                              
+                           </div>
+                        </div>
+                     </div>
+                     
+                  </div>	
+               </div>
+               
+            </div>	
+
+
+
+			
+			
+			<div class="col-lg-6 col-xs-12">
+				<div class="x_panel tile fixed_height_220">
+					<div class="x_title">
+						<ul class="nav navbar-right panel_toolbox">
+							<li class="dropdown">
+								<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><span style="font-size:20px"><i class="fa fa-search-plus"></i></span></a>
+										<ul class="dropdown-menu dropdown-menu-right " role="menu" style="postion: relative;left: auto;">	
+											<li><a data-toggle="modal" data-target="#myModalCAP1">Despesas Realizadas no Mês</a></li>
+											<li><a data-toggle="modal" data-target="#myModalCAP2">Histórico de Despesas no ano</a></li>
+											<li><a data-toggle="modal" data-target="#myModalCAP3">Previsto x Realizado de Despesas no Ano</a></li>
+										</ul>
+							</li>				  
+							<li><a class="close-link"><span style="font-size:20px"><i class="fa fa-close"></i></span></a></li>
+						</ul>				
+						<div class="icon"><h1> <i class="fa fa-graduation-cap"> Capacitações</h1></i></div>										
+						<div class="clearfix"></div>
+					</div>
+					<div class="x_content">
+					
+					
+						<!-- Modal -->
+						<div class="modal fade" id="myModalCAP1" role="dialog">
+							<div class="modal-dialog">
+							
+							<!-- Modal content-->
+							<div class="modal-content">
+								<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal">&times;</button>
+								<h4 class="modal-title">Despesas Realizadas no Mês com Capacitações</h4>
+								</div>
+								<div class="modal-body">
+									<div id="containerCAP1" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+								</div>
+								<div class="modal-footer">
+								<button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+								</div>
+							</div>
+							<!-- Modal content-->
+							
+							</div>
+						</div>
+						<!-- End Modal -->
+						
+						<!-- Modal -->
+						<div class="modal fade" id="myModalCAP2" role="dialog">
+							<div class="modal-dialog">
+							
+							<!-- Modal content-->
+							<div class="modal-content">
+								<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal">&times;</button>
+								<h4 class="modal-title">Histórico de Capacitações no ano</h4>
+								</div>
+								<div class="modal-body">
+									<div id="containerCAP2" ></div>
+								</div>
+								<div class="modal-footer">
+								<button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+								</div>
+							</div>
+							<!-- Modal content-->
+							
+							</div>
+						</div>
+						<!-- End Modal -->  
+						
+						<!-- Modal -->
+						<div class="modal fade" id="myModalCAP3" role="dialog">
+							<div class="modal-dialog modal-lg">
+							
+							<!-- Modal content-->
+							<div class="modal-content">
+								<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal">&times;</button>
+								<h4 class="modal-title">Previsto x Realizado Acumulado para Capacitações no Ano</h4>
+								</div>
+								<div class="modal-body">
+									<div id="containerCAP3" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+								</div>
+								<div class="modal-footer">
+								<button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+								</div>
+							</div>
+							<!-- Modal content-->
+							
+							</div>
+						</div>
+						<!-- End Modal -->  
+					
+					
+						<div class="row top_tiles">
+							<div class="animated flipInY col-sm-6 col-xs-12">
+								<div class="tile-stats">
+									<div class="count">R$ {{ORC_CAP_PRE_MES|default:"0"|floatformat:0}}</div>
+										<h3>Previsto no Mês</h3>
+										<p>Total Previsto em {{mes_corrente}}/{{ano_corrente}}</p>
+										{% if TOT_ORC_CAP_REL_MES >= ORC_CAP_PRE_MES %}
+										<div class="count red">R$ {{TOT_ORC_CAP_REL_MES|default:"0"|floatformat:0}}</div>		
+										{% else %}
+										<div class="count green">R$ {{TOT_ORC_CAP_REL_MES|default:"0"|floatformat:0}}</div>
+										{% endif %}
+										<h3>Realizado no Mês</h3>
+										<p>Total Relizados em {{mes_corrente}}/{{ano_corrente}}</p>
+								</div>
+							</div>
+							<div class="animated flipInY col-sm-6 col-xs-12">
+								<div class="tile-stats">
+									
+									<div class="count">R$ {{ORC_CAP_PRE_ANO|default:"0"|floatformat:0}}</div>
+										<h3>Previsto no Ano</h3>
+										<p>Total Previstos em {{ano_corrente}}</p>
+										{% if TOT_ORC_CAP_REL_ANO >= ORC_CAP_PRE_ANO %}
+												<div class="count red">R$ {{TOT_ORC_CAP_REL_ANO|default:"0"|floatformat:0}}</div>	
+										{% else %}
+											<div class="count green">R$ {{TOT_ORC_CAP_REL_ANO|default:"0"|floatformat:0}}</div>
+										{% endif %}
+										<h3>Realizado no Ano</h3>
+										<p>Total Realizados em {{ano_corrente}}</p>
+								</div>
+							</div>	
+						</div>
+						
+					</div>	
+				</div>		
+			</div>
+
+
+			<div class="col-lg-6 col-xs-12">
+				<div class="x_panel tile fixed_height_220">
+					<div class="x_title">
+						<ul class="nav navbar-right panel_toolbox">
+							<li class="dropdown">
+								<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><span style="font-size:20px"><i class="fa fa-search-plus"></i></span></a>
+										<ul class="dropdown-menu dropdown-menu-right " role="menu" style="postion: relative;left: auto;">	
+											<li><a data-toggle="modal" data-target="#myModalCON1">Despesas Realizadas no Mês</a></li>
+											<li><a data-toggle="modal" data-target="#myModalCON2">Histórico de Despesas no ano</a></li>
+											<li><a data-toggle="modal" data-target="#myModalCON3">Previsto x Realizado de Despesas no Ano</a></li>
+										</ul>
+							</li>				  
+							<li><a class="close-link"><span style="font-size:20px"><span style="font-size:20px"><i class="fa fa-close"></i></span></a></li>
+						</ul>					
+						<div class="icon"><h1> <i class="fa fa-credit-card"> Consumos</h1></i></div>
+						<div class="clearfix"></div>
+					</div>
+					<div class="x_content">
+					
+					
+						<!-- Modal -->
+						<div class="modal fade" id="myModalCON1" role="dialog">
+							<div class="modal-dialog">
+							
+							<!-- Modal content-->
+							<div class="modal-content">
+								<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal">&times;</button>
+								<h4 class="modal-title">Despesas Realizadas no Mês com Consumos</h4>
+								</div>
+								<div class="modal-body">
+									<div id="containerCON1" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+								</div>
+								<div class="modal-footer">
+								<button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+								</div>
+							</div>
+							<!-- Modal content-->
+							
+							</div>
+						</div>
+						<!-- End Modal -->
+						
+						<!-- Modal -->
+						<div class="modal fade" id="myModalCON2" role="dialog">
+							<div class="modal-dialog">
+							
+							<!-- Modal content-->
+							<div class="modal-content">
+								<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal">&times;</button>
+								<h4 class="modal-title">Histórico de Consumos no ano</h4>
+								</div>
+								<div class="modal-body">
+									<div id="containerCON2" ></div>
+								</div>
+								<div class="modal-footer">
+								<button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+								</div>
+							</div>
+							<!-- Modal content-->
+							
+							</div>
+						</div>
+						<!-- End Modal -->  
+						
+						<!-- Modal -->
+						<div class="modal fade" id="myModalCON3" role="dialog">
+							<div class="modal-dialog modal-lg">
+							
+							<!-- Modal content-->
+							<div class="modal-content">
+								<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal">&times;</button>
+								<h4 class="modal-title">Previsto x Realizado Acumulado para Consumos no Ano</h4>
+								</div>
+								<div class="modal-body">
+									<div id="containerCON3" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+								</div>
+								<div class="modal-footer">
+								<button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+								</div>
+							</div>
+							<!-- Modal content-->
+							
+							</div>
+						</div>
+						<!-- End Modal -->  
+					
+					
+						<div class="row top_tiles">				
+							<div class="animated flipInY col-sm-6 col-xs-12">
+								<div class="tile-stats">
+									<div class="count">R$ {{ORC_CON_PRE_MES|default:"0"|floatformat:0}}</div>
+										<h3>Previsto no Mês</h3>
+										<p>Total Previsto em {{mes_corrente}}/{{ano_corrente}}</p>
+										{% if TOT_ORC_CON_REL_MES >= ORC_CON_PRE_MES %}
+										<div class="count red">R$ {{TOT_ORC_CON_REL_MES|default:"0"|floatformat:0}}</div>		
+										{% else %}
+										<div class="count green">R$ {{TOT_ORC_CON_REL_MES|default:"0"|floatformat:0}}</div>
+										{% endif %}
+										<h3>Realizado no Mês</h3>
+										<p>Total Relizados em {{mes_corrente}}/{{ano_corrente}}</p>
+								</div>
+							</div>
+							<div class="animated flipInY col-sm-6 col-xs-12">
+								<div class="tile-stats">
+									
+									<div class="count">R$ {{ORC_CON_PRE_ANO|default:"0"|floatformat:0}}</div>
+										<h3>Previsto no Ano</h3>
+										<p>Total Previstos em {{ano_corrente}}</p>
+										{% if TOT_ORC_CON_REL_ANO >= ORC_CON_PRE_ANO %}
+												<div class="count red">R$ {{TOT_ORC_CON_REL_ANO|default:"0"|floatformat:0}}</div>	
+										{% else %}
+											<div class="count green">R$ {{TOT_ORC_CON_REL_ANO|default:"0"|floatformat:0}}</div>
+										{% endif %}
+										<h3>Realizado no Ano</h3>
+										<p>Total Realizados em {{ano_corrente}}</p>
+								</div>
+							</div>	
+						</div>
+						
+					</div>	
+				</div>		
+			</div>				
+
+
+
+
+			<div class="col-lg-6 col-xs-12">
+				<div class="x_panel tile fixed_height_220">
+					<div class="x_title">
+						<ul class="nav navbar-right panel_toolbox">
+							<li class="dropdown">
+								<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><span style="font-size:20px"><i class="fa fa-search-plus"></i></span></a>
+										<ul class="dropdown-menu dropdown-menu-right " role="menu" style="postion: relative;left: auto;">	
+											<li><a data-toggle="modal" data-target="#myModalEVE1">Despesas Realizadas no Mês</a></li>
+											<li><a data-toggle="modal" data-target="#myModalEVE2">Histórico de Despesas no ano</a></li>
+											<li><a data-toggle="modal" data-target="#myModalEVE3">Previsto x Realizado de Despesas no Ano</a></li>
+										</ul>
+							</li>				  
+							<li><a class="close-link"><span style="font-size:20px"><i class="fa fa-close"></i></span></a></li>
+						</ul>				
+						<div class="icon"><h1> <i class="fa fa-comments-o"> Eventos</h1></i></div>																									
+						<div class="clearfix"></div>
+					</div>
+					<div class="x_content">
+					
+					
+						<!-- Modal -->
+						<div class="modal fade" id="myModalEVE1" role="dialog">
+							<div class="modal-dialog">
+							
+							<!-- Modal content-->
+							<div class="modal-content">
+								<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal">&times;</button>
+								<h4 class="modal-title">Despesas Realizadas no Mês com Eventos</h4>
+								</div>
+								<div class="modal-body">
+									<div id="containerEVE1" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+								</div>
+								<div class="modal-footer">
+								<button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+								</div>
+							</div>
+							<!-- Modal content-->
+							
+							</div>
+						</div>
+						<!-- End Modal -->
+						
+						<!-- Modal -->
+						<div class="modal fade" id="myModalEVE2" role="dialog">
+							<div class="modal-dialog">
+							
+							<!-- Modal content-->
+							<div class="modal-content">
+								<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal">&times;</button>
+								<h4 class="modal-title">Histórico de Eventos no ano</h4>
+								</div>
+								<div class="modal-body">
+									<div id="containerEVE2" ></div>
+								</div>
+								<div class="modal-footer">
+								<button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+								</div>
+							</div>
+							<!-- Modal content-->
+							
+							</div>
+						</div>
+						<!-- End Modal -->  
+						
+						<!-- Modal -->
+						<div class="modal fade" id="myModalEVE3" role="dialog">
+							<div class="modal-dialog modal-lg">
+							
+							<!-- Modal content-->
+							<div class="modal-content">
+								<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal">&times;</button>
+								<h4 class="modal-title">Previsto x Realizado Acumulado para Eventos no Ano</h4>
+								</div>
+								<div class="modal-body">
+									<div id="containerEVE3" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+								</div>
+								<div class="modal-footer">
+								<button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+								</div>
+							</div>
+							<!-- Modal content-->
+							
+							</div>
+						</div>
+						<!-- End Modal -->  
+					
+					
+						<div class="row top_tiles">				
+							<div class="animated flipInY col-sm-6 col-xs-12">
+								<div class="tile-stats">
+									<div class="count">R$ {{ORC_EVE_PRE_MES|default:"0"|floatformat:0}}</div>
+										<h3>Previsto no Mês</h3>
+										<p>Total Previsto em {{mes_corrente}}/{{ano_corrente}}</p>
+										{% if TOT_ORC_EVE_REL_MES >= ORC_EVE_PRE_MES %}
+										<div class="count red">R$ {{TOT_ORC_EVE_REL_MES|default:"0"|floatformat:0}}</div>		
+										{% else %}
+										<div class="count green">R$ {{TOT_ORC_EVE_REL_MES|default:"0"|floatformat:0}}</div>
+										{% endif %}
+										<h3>Realizado no Mês</h3>
+										<p>Total Relizados em {{mes_corrente}}/{{ano_corrente}}</p>
+								</div>
+							</div>
+							<div class="animated flipInY col-sm-6 col-xs-12">
+								<div class="tile-stats">
+									
+									<div class="count">R$ {{ORC_EVE_PRE_ANO|default:"0"|floatformat:0}}</div>
+										<h3>Previsto no Ano</h3>
+										<p>Total Previstos em {{ano_corrente}}</p>
+										{% if TOT_ORC_EVE_REL_ANO >= ORC_EVE_PRE_ANO %}
+												<div class="count red">R$ {{TOT_ORC_EVE_REL_ANO|default:"0"|floatformat:0}}</div>	
+										{% else %}
+											<div class="count green">R$ {{TOT_ORC_EVE_REL_ANO|default:"0"|floatformat:0}}</div>
+										{% endif %}
+										<h3>Realizado no Ano</h3>
+										<p>Total Realizados em {{ano_corrente}}</p>
+								</div>
+							</div>		
+						</div>
+						
+					</div>	
+				</div>		
+			</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+			
+			
+	
+			<div class="col-lg-6 col-xs-12">
+				<div class="x_panel tile fixed_height_220">
+					<div class="x_title">
+						<ul class="nav navbar-right panel_toolbox">
+							<li class="dropdown">
+								<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><span style="font-size:20px"><i class="fa fa-search-plus"></i></span></a>
+										<ul class="dropdown-menu dropdown-menu-right " role="menu" style="postion: relative;left: auto;">	
+											<li><a data-toggle="modal" data-target="#myModalFOR1">Despesas Realizadas no Mês</a></li>
+											<li><a data-toggle="modal" data-target="#myModalFOR2">Histórico de Despesas no ano</a></li>
+											<li><a data-toggle="modal" data-target="#myModalFOR3">Previsto x Realizado de Despesas no Ano</a></li>
+										</ul>
+							</li>				  
+							<li><a class="close-link"><span style="font-size:20px"><i class="fa fa-close"></i></span></a></li>
+						</ul>				
+						<div class="icon"><h1> <i class="fa fa-group"> Fornecedores</h1></i></div>																									
+						<div class="clearfix"></div>
+					</div>
+					<div class="x_content">
+					
+					
+						<!-- Modal -->
+						<div class="modal fade" id="myModalFOR1" role="dialog">
+							<div class="modal-dialog">
+							
+							<!-- Modal content-->
+							<div class="modal-content">
+								<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal">&times;</button>
+								<h4 class="modal-title">Despesas Realizadas no Mês com Fornecedores</h4>
+								</div>
+								<div class="modal-body">
+									<div id="containerFOR1" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+								</div>
+								<div class="modal-footer">
+								<button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+								</div>
+							</div>
+							<!-- Modal content-->
+							
+							</div>
+						</div>
+						<!-- End Modal -->
+						
+						<!-- Modal -->
+						<div class="modal fade" id="myModalFOR2" role="dialog">
+							<div class="modal-dialog">
+							
+							<!-- Modal content-->
+							<div class="modal-content">
+								<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal">&times;</button>
+								<h4 class="modal-title">Histórico de Fornecedores no ano</h4>
+								</div>
+								<div class="modal-body">
+									<div id="containerFOR2" ></div>
+								</div>
+								<div class="modal-footer">
+								<button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+								</div>
+							</div>
+							<!-- Modal content-->
+							
+							</div>
+						</div>
+						<!-- End Modal -->  
+						
+						<!-- Modal -->
+						<div class="modal fade" id="myModalFOR3" role="dialog">
+							<div class="modal-dialog modal-lg">
+							
+							<!-- Modal content-->
+							<div class="modal-content">
+								<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal">&times;</button>
+								<h4 class="modal-title">Previsto x Realizado Acumulado para Fornecedores no Ano</h4>
+								</div>
+								<div class="modal-body">
+									<div id="containerFOR3" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+								</div>
+								<div class="modal-footer">
+								<button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+								</div>
+							</div>
+							<!-- Modal content-->
+							
+							</div>
+						</div>
+						<!-- End Modal -->  
+					
+					
+						<div class="row top_tiles">				
+							<div class="animated flipInY col-sm-6 col-xs-12">
+								<div class="tile-stats">
+									<div class="count">R$ {{ORC_FOR_PRE_MES|default:"0"|floatformat:0}}</div>
+										<h3>Previsto no Mês</h3>
+										<p>Total Previsto em {{mes_corrente}}/{{ano_corrente}}</p>
+										{% if TOT_ORC_FOR_REL_MES >= ORC_FOR_PRE_MES %}
+										<div class="count red">R$ {{TOT_ORC_FOR_REL_MES|default:"0"|floatformat:0}}</div>		
+										{% else %}
+										<div class="count green">R$ {{TOT_ORC_FOR_REL_MES|default:"0"|floatformat:0}}</div>
+										{% endif %}
+										<h3>Realizado no Mês</h3>
+										<p>Total Relizados em {{mes_corrente}}/{{ano_corrente}}</p>
+								</div>
+							</div>
+							<div class="animated flipInY col-sm-6 col-xs-12">
+								<div class="tile-stats">
+									
+									<div class="count">R$ {{ORC_FOR_PRE_ANO|default:"0"|floatformat:0}}</div>
+										<h3>Previsto no Ano</h3>
+										<p>Total Previstos em {{ano_corrente}}</p>
+										{% if TOT_ORC_FOR_REL_ANO >= ORC_FOR_PRE_ANO %}
+												<div class="count red">R$ {{TOT_ORC_FOR_REL_ANO|default:"0"|floatformat:0}}</div>	
+										{% else %}
+											<div class="count green">R$ {{TOT_ORC_FOR_REL_ANO|default:"0"|floatformat:0}}</div>
+										{% endif %}
+										<h3>Realizado no Ano</h3>
+										<p>Total Realizados em {{ano_corrente}}</p>
+								</div>
+							</div>		
+						</div>
+						
+					</div>	
+				</div>		
+			</div>
+
+
+			<div class="col-lg-6 col-xs-12">
+				<div class="x_panel tile fixed_height_220">
+					<div class="x_title">
+						<ul class="nav navbar-right panel_toolbox">
+							<li class="dropdown">
+								<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><span style="font-size:20px"><i class="fa fa-search-plus"></i></span></a>
+										<ul class="dropdown-menu dropdown-menu-right " role="menu" style="postion: relative;left: auto;">	
+											<li><a data-toggle="modal" data-target="#myModalVIG1">Despesas Realizadas no Mês</a></li>
+											<li><a data-toggle="modal" data-target="#myModalVIG2">Histórico de Despesas no ano</a></li>
+											<li><a data-toggle="modal" data-target="#myModalVIG3">Previsto x Realizado de Despesas no Ano</a></li>
+										</ul>
+							</li>				  
+							<li><a class="close-link"><span style="font-size:20px"><i class="fa fa-close"></i></span></a></li>
+						</ul>				
+						<div class="icon"><h1> <i class="fa fa-plane"> Viagens</h1></i></div>
+						<div class="clearfix"></div>
+					</div>
+					<div class="x_content">
+					
+					
+						<!-- Modal -->
+						<div class="modal fade" id="myModalVIG1" role="dialog">
+							<div class="modal-dialog">
+							
+							<!-- Modal content-->
+							<div class="modal-content">
+								<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal">&times;</button>
+								<h4 class="modal-title">Despesas Realizadas no Mês com Viagens</h4>
+								</div>
+								<div class="modal-body">
+									<div id="containerVIG1" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+								</div>
+								<div class="modal-footer">
+								<button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+								</div>
+							</div>
+							<!-- Modal content-->
+							
+							</div>
+						</div>
+						<!-- End Modal -->
+						
+						<!-- Modal -->
+						<div class="modal fade" id="myModalVIG2" role="dialog">
+							<div class="modal-dialog">
+							
+							<!-- Modal content-->
+							<div class="modal-content">
+								<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal">&times;</button>
+								<h4 class="modal-title">Histórico de Viagens no ano</h4>
+								</div>
+								<div class="modal-body">
+									<div id="containerVIG2" ></div>
+								</div>
+								<div class="modal-footer">
+								<button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+								</div>
+							</div>
+							<!-- Modal content-->
+							
+							</div>
+						</div>
+						<!-- End Modal -->  
+						
+						<!-- Modal -->
+						<div class="modal fade" id="myModalVIG3" role="dialog">
+							<div class="modal-dialog modal-lg">
+							
+							<!-- Modal content-->
+							<div class="modal-content">
+								<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal">&times;</button>
+								<h4 class="modal-title">Previsto x Realizado Acumulado para Viagens no Ano</h4>
+								</div>
+								<div class="modal-body">
+									<div id="containerVIG3" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+								</div>
+								<div class="modal-footer">
+								<button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+								</div>
+							</div>
+							<!-- Modal content-->
+							
+							</div>
+						</div>
+						<!-- End Modal -->  
+					
+					
+						<div class="row top_tiles">				
+							<div class="animated flipInY col-sm-6 col-xs-12">
+								<div class="tile-stats">
+									<div class="count">R$ {{ORC_VIG_PRE_MES|default:"0"|floatformat:0}}</div>
+										<h3>Previsto no Mês</h3>
+										<p>Total Previsto em {{mes_corrente}}/{{ano_corrente}}</p>
+										{% if TOT_ORC_VIG_REL_MES >= ORC_VIG_PRE_MES %}
+										<div class="count red">R$ {{TOT_ORC_VIG_REL_MES|default:"0"|floatformat:0}}</div>		
+										{% else %}
+										<div class="count green">R$ {{TOT_ORC_VIG_REL_MES|default:"0"|floatformat:0}}</div>
+										{% endif %}
+										<h3>Realizado no Mês</h3>
+										<p>Total Relizados em {{mes_corrente}}/{{ano_corrente}}</p>
+								</div>
+							</div>
+							<div class="animated flipInY col-sm-6 col-xs-12">
+								<div class="tile-stats">
+									
+									<div class="count">R$ {{ORC_VIG_PRE_ANO|default:"0"|floatformat:0}}</div>
+										<h3>Previsto no Ano</h3>
+										<p>Total Previstos em {{ano_corrente}}</p>
+										{% if TOT_ORC_VIG_REL_ANO >= ORC_VIG_PRE_ANO %}
+												<div class="count red">R$ {{TOT_ORC_VIG_REL_ANO|default:"0"|floatformat:0}}</div>	
+										{% else %}
+											<div class="count green">R$ {{TOT_ORC_VIG_REL_ANO|default:"0"|floatformat:0}}</div>
+										{% endif %}
+										<h3>Realizado no Ano</h3>
+										<p>Total Realizados em {{ano_corrente}}</p>
+								</div>
+							</div>		
+						</div>
+						
+					</div>	
+				</div>		
+			</div>	
+			
+			
+			
+			<div class="col-lg-6 col-xs-12">
+				<div class="x_panel tile fixed_height_220">
+					<div class="x_title">
+						<ul class="nav navbar-right panel_toolbox">
+							<li class="dropdown">
+								<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><span style="font-size:20px"><i class="fa fa-search-plus"></span></i></a>
+										<ul class="dropdown-menu dropdown-menu-right " role="menu" style="postion: relative;left: auto;">	
+											<li><a data-toggle="modal" data-target="#myModalSEM1">Despesas Realizadas no Mês</a></li>
+											<li><a data-toggle="modal" data-target="#myModalSEM2">Histórico de Despesas no ano</a></li>
+											<li><a data-toggle="modal" data-target="#myModalSEM3">Previsto x Realizado de Despesas no Ano</a></li>
+										</ul>
+							</li>				  
+							<li><a class="close-link"><span style="font-size:20px"><i class="fa fa-close"></i></span></a></li>
+						</ul>				
+						<div class="icon"><h1> <i class="fa fa-question"> Sem Classificação</h1></i></div>																
+						<div class="clearfix"></div>
+					</div>
+					<div class="x_content">
+					
+					
+						<!-- Modal -->
+						<div class="modal fade" id="myModalSEM1" role="dialog">
+							<div class="modal-dialog">
+							
+							<!-- Modal content-->
+							<div class="modal-content">
+								<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal">&times;</button>
+								<h4 class="modal-title">Despesas Realizadas no Mês com Sem Classificação</h4>
+								</div>
+								<div class="modal-body">
+									<div id="containerSEM1" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+								</div>
+								<div class="modal-footer">
+								<button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+								</div>
+							</div>
+							<!-- Modal content-->
+							
+							</div>
+						</div>
+						<!-- End Modal -->
+						
+						<!-- Modal -->
+						<div class="modal fade" id="myModalSEM2" role="dialog">
+							<div class="modal-dialog">
+							
+							<!-- Modal content-->
+							<div class="modal-content">
+								<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal">&times;</button>
+								<h4 class="modal-title">Histórico de Sem Classificação no ano</h4>
+								</div>
+								<div class="modal-body">
+									<div id="containerSEM2" ></div>
+								</div>
+								<div class="modal-footer">
+								<button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+								</div>
+							</div>
+							<!-- Modal content-->
+							
+							</div>
+						</div>
+						<!-- End Modal -->  
+						
+						<!-- Modal -->
+						<div class="modal fade" id="myModalSEM3" role="dialog">
+							<div class="modal-dialog modal-lg">
+							
+							<!-- Modal content-->
+							<div class="modal-content">
+								<div class="modal-body">
+									<div id="containerSEM3" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+								</div>
+								<div class="modal-footer">
+								<button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+								</div>
+							</div>
+							<!-- Modal content-->
+							
+							</div>
+						</div>
+						<!-- End Modal -->  
+					
+					
+						<div class="row top_tiles">				
+							<div class="animated flipInY col-sm-6 col-xs-12">
+								<div class="tile-stats">
+									<div class="count">R$ {{ORC_SEM_PRE_MES|default:"0"|floatformat:0}}</div>
+										<h3>Previsto no Mês</h3>
+										<p>Total Previsto em {{mes_corrente}}/{{ano_corrente}}</p>
+										{% if TOT_ORC_SEM_REL_MES >= ORC_SEM_PRE_MES %}
+										<div class="count red">R$ {{TOT_ORC_SEM_REL_MES|default:"0"|floatformat:0}}</div>		
+										{% else %}
+										<div class="count green">R$ {{TOT_ORC_SEM_REL_MES|default:"0"|floatformat:0}}</div>
+										{% endif %}
+										<h3>Realizado no Mês</h3>
+										<p>Total Relizados em {{mes_corrente}}/{{ano_corrente}}</p>
+								</div>
+							</div>
+							<div class="animated flipInY col-sm-6 col-xs-12">
+								<div class="tile-stats">
+									
+									<div class="count">R$ {{ORC_SEM_PRE_ANO|default:"0"|floatformat:0}}</div>
+										<h3>Previsto no Ano</h3>
+										<p>Total Previstos em {{ano_corrente}}</p>
+										{% if TOT_ORC_SEM_REL_ANO >= ORC_SEM_PRE_ANO %}
+												<div class="count red">R$ {{TOT_ORC_SEM_REL_ANO|default:"0"|floatformat:0}}</div>	
+										{% else %}
+											<div class="count green">R$ {{TOT_ORC_SEM_REL_ANO|default:"0"|floatformat:0}}</div>
+										{% endif %}
+										<h3>Realizado no Ano</h3>
+										<p>Total Realizados em {{ano_corrente}}</p>
+								</div>
+							</div>	
+						</div>
+						
+					</div>	
+				</div>		
+			</div>				
+			
+                  <!-- end project list -->
+				  
+				 
+         </div>
+      </div>
+	  </div>
+      </div>
+      </div>
+      <!-- /page content -->
+      <!-- footer content -->
+      {% include "sarg/include/footer.html" %}
+      <!-- /footer content -->
+      </div>
+      </div>
+      <!-- scripts content -->
+      {% include "sarg/include/scripts.html" %}
+<script>
+// Build the chart Beneficios
+Highcharts.chart('containerBEN1', {
+    chart: {
+        plotBackgroundColor: null,
+        plotBorderWidth: null,
+        plotShadow: false,
+        type: 'pie'
+    },
+    subtitle: {
+        text: 'Fonte: Protheus'
+    },	
+    title: {
+        text: 'Despesas realizadas no Mês com Benefícios'
+    },
+    tooltip: {
+        pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+    },
+    plotOptions: {
+        pie: {
+            allowPointSelect: true,
+            cursor: 'pointer',
+            dataLabels: {
+                enabled: false
+            },
+            showInLegend: true
+        }
+    },
+    series: [{
+        name: 'Porcentagem',
+        colorByPoint: true,
+        data: [{% for i in ORC_BEN_REL_PER %}{name: '{{i.descricao_natureza}}', y: {{i.perc|floatformat:0}}}, {% endfor %}]
+    }]
+});
+
+
+Highcharts.chart('containerBEN2', {
+    chart: {
+        type: 'column'
+    },
+    title: {
+        text: 'Histórico de Despesas no ano'
+    },
+    subtitle: {
+        text: 'Fonte: Protheus'
+    },
+    xAxis: {
+        type: 'category',
+        labels: {
+            rotation: -30,
+            style: {
+                fontSize: '11px',
+                fontFamily: 'Verdana, sans-serif'
+            }
+        }
+    },
+    yAxis: {
+        min: 0,
+        title: {
+            text: ''
+        }
+    },
+    legend: {
+        enabled: false
+    },
+    series: [{
+        name: 'Histórico de Benefícios no ano',
+		color: '#1ABB9C',
+        data: [
+		{% for i in ORC_BEN_HIST_ANO %}
+		['{{i.periodo}}', {{i.tot_val|stringformat:".2f"}}],
+		{% endfor %}
+		],
+        dataLabels: {
+            enabled: true,
+            rotation: -360,
+            align: 'center',
+			color: 'black',
+            y: -5, // 10 pixels down from the top
+            style: {
+                fontSize: '11px',
+                fontFamily: 'Verdana, sans-serif'
+            }
+        }
+    }]
+});
+
+
+Highcharts.chart('containerBEN3', {
+    chart: {
+        type: 'line'
+    },
+    title: {
+        text: 'Previsto x Realizado de Despesas no Ano'
+    },
+    subtitle: {
+        text: 'Fonte: Protheus (Relizado) e SARG (Previsto)'
+    },
+    xAxis: {
+        categories: ['jan', 'fev', 'mar', 'abr', 'mai', 'jun', 'jul', 'ago', 'set', 'out', 'nov', 'dez',]
+    },
+    yAxis: {
+        title: {
+            text: ''
+        }
+    },
+    plotOptions: {
+        line: {
+            dataLabels: {
+                enabled: true
+            },
+            enableMouseTracking: false
+        }
+    },
+    series: [{
+        name: 'Previsto',
+        color: '#73879c',
+        data: [
+		  {% for i in ORC_BEN_PRE_ANO_ACU %}
+        {{i.VALOR_PREVISTO|stringformat:".2f"}},
+		  {% endfor %}
+		]
+    },{
+        name: 'Saldo',
+        color: '#1a9cbb',
+        data: [
+		  {% for i in ORC_BEN_PRE_ANO_ACU %}
+        {{i.VALOR_SALDO|stringformat:".2f"}},
+		  {% endfor %}
+		]
+    }, {
+        name: 'Realizado',
+        color: '#1abb9c',
+        data: [
+        {% for i in ORC_BEN_PRE_ANO_ACU %}
+        {{i.VALOR_APROVADO|stringformat:".2f"}},
+        {% endfor %}]
+    }, {
+        name: 'Projetado',
+        color: '#bb1a9c',
+        data: [
+        {% for i in ORC_BEN_PRE_ANO_ACU %}
+        {{i.VALOR_PROJETADO|stringformat:".2f"}},
+        {% endfor %}]
+    }]
+});
+// End Build the chart Beneficios
+</script>
+<script> 
+ // Build the chart Capacitacoes
+Highcharts.chart('containerCAP1', {
+    chart: {
+        plotBackgroundColor: null,
+        plotBorderWidth: null,
+        plotShadow: false,
+        type: 'pie'
+    },
+    subtitle: {
+        text: 'Fonte: Protheus'
+    },	
+    title: {
+        text: 'Despesas realizadas no Mês com Capacitações'
+    },
+    tooltip: {
+        pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+    },
+    plotOptions: {
+        pie: {
+            allowPointSelect: true,
+            cursor: 'pointer',
+            dataLabels: {
+                enabled: false
+            },
+            showInLegend: true
+        }
+    },
+    series: [{
+        name: 'Porcentagem',
+        colorByPoint: true,
+        data: [{% for i in ORC_CAP_REL_PER %}{name: '{{i.descricao_natureza}}', y: {{i.perc|floatformat:0}}}, {% endfor %}]
+    }]
+});
+
+
+Highcharts.chart('containerCAP2', {
+    chart: {
+        type: 'column'
+    },
+    title: {
+        text: 'Histórico de Despesas no ano'
+    },
+    subtitle: {
+        text: 'Fonte: Protheus'
+    },
+    xAxis: {
+        type: 'category',
+        labels: {
+            rotation: -30,
+            style: {
+                fontSize: '11px',
+                fontFamily: 'Verdana, sans-serif'
+            }
+        }
+    },
+    yAxis: {
+        min: 0,
+        title: {
+            text: ''
+        }
+    },
+    legend: {
+        enabled: false
+    },
+    series: [{
+        name: 'Histórico de Capacitações no ano',
+		color: '#1ABB9C',
+        data: [
+		{% for i in ORC_CAP_HIST_ANO %}
+		['{{i.periodo}}', {{i.tot_val|stringformat:".2f"}}],
+		{% endfor %}
+		],
+        dataLabels: {
+            enabled: true,
+            rotation: -360,
+            align: 'center',
+			color: 'black',
+            y: -5, // 10 pixels down from the top
+            style: {
+                fontSize: '11px',
+                fontFamily: 'Verdana, sans-serif'
+            }
+        }
+    }]
+});
+
+
+Highcharts.chart('containerCAP3', {
+    chart: {
+        type: 'line'
+    },
+    title: {
+        text: 'Previsto x Realizado de Despesas no Ano'
+    },
+    subtitle: {
+        text: 'Fonte: Protheus (Relizado) e SARG (Previsto)'
+    },
+    xAxis: {
+        categories: ['jan', 'fev', 'mar', 'abr', 'mai', 'jun', 'jul', 'ago', 'set', 'out', 'nov', 'dez',]
+    },
+    yAxis: {
+        title: {
+            text: ''
+        }
+    },
+    tooltip: {
+        shared: true,
+        valuePrefix: 'R$ '
+    },
+    plotOptions: {
+        line: {
+            dataLabels: {
+                enabled: true
+            },
+            enableMouseTracking: false
+        }
+    },
+    series: [{
+        name: 'Previsto',
+        color: '#73879c',
+        data: [
+		  {% for i in ORC_CAP_PRE_ANO_ACU %}
+        {{i.VALOR_PREVISTO|stringformat:".2f"}},
+		  {% endfor %}
+		]
+    }, {
+        name: 'Realizado',
+        color: '#1abb9c',
+        data: [
+        {% for i in ORC_CAP_PRE_ANO_ACU %}
+        {{i.VALOR_APROVADO|stringformat:".2f"}},
+        {% endfor %}
+      ]
+    }, {
+        name: 'Projetado',
+        color: '#bb1a9c',
+        data: [
+        {% for i in ORC_CAP_PRE_ANO_ACU %}
+        {{i.VALOR_PROJETADO|stringformat:".2f"}},
+        {% endfor %}]
+    },{
+        name: 'Saldo',
+        color: '#1a9cbb',
+        data: [
+		  {% for i in ORC_CAP_PRE_ANO_ACU %}
+        {{i.VALOR_SALDO|stringformat:".2f"}},
+		  {% endfor %}
+		]
+    }]
+
+});
+// End Build the chart Capacitações
+</script>
+<script>
+ // Build the chart Consumos
+Highcharts.chart('containerCON1', {
+    chart: {
+        plotBackgroundColor: null,
+        plotBorderWidth: null,
+        plotShadow: false,
+        type: 'pie'
+    },
+    subtitle: {
+        text: 'Fonte: Protheus'
+    },	
+    title: {
+        text: 'Despesas realizadas no Mês com Consumos'
+    },
+    tooltip: {
+        pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+    },
+    plotOptions: {
+        pie: {
+            allowPointSelect: true,
+            cursor: 'pointer',
+            dataLabels: {
+                enabled: false
+            },
+            showInLegend: true
+        }
+    },
+    series: [{
+        name: 'Porcentagem',
+        colorByPoint: true,
+        data: [{% for i in ORC_CON_REL_PER %}{name: '{{i.descricao_natureza}}', y: {{i.perc|floatformat:0}}}, {% endfor %}]
+    }]
+});
+
+
+Highcharts.chart('containerCON2', {
+    chart: {
+        type: 'column'
+    },
+    title: {
+        text: 'Histórico de Despesas no ano'
+    },
+    subtitle: {
+        text: 'Fonte: Protheus'
+    },
+    xAxis: {
+        type: 'category',
+        labels: {
+            rotation: -30,
+            style: {
+                fontSize: '11px',
+                fontFamily: 'Verdana, sans-serif'
+            }
+        }
+    },
+    yAxis: {
+        min: 0,
+        title: {
+            text: ''
+        }
+    },
+    legend: {
+        enabled: false
+    },
+    series: [{
+        name: 'Histórico de Consumos no ano',
+		color: '#1ABB9C',
+        data: [
+		{% for i in ORC_CON_HIST_ANO %}
+		['{{i.ano_mes}}', {{i.tot_val|stringformat:".2f"}}],
+		{% endfor %}
+		],
+        dataLabels: {
+            enabled: true,
+            rotation: -360,
+            align: 'center',
+			color: 'black',
+            y: -5, // 10 pixels down from the top
+            style: {
+                fontSize: '11px',
+                fontFamily: 'Verdana, sans-serif'
+            }
+        }
+    }]
+});
+
+
+Highcharts.chart('containerCON3', {
+    chart: {
+        type: 'line'
+    },
+    title: {
+        text: 'Previsto x Realizado de Despesas no Ano'
+    },
+    subtitle: {
+        text: 'Fonte: Protheus (Relizado) e SARG (Previsto)'
+    },
+    xAxis: {
+        categories: ['jan', 'fev', 'mar', 'abr', 'mai', 'jun', 'jul', 'ago', 'set', 'out', 'nov', 'dez',]
+    },
+    yAxis: {
+        title: {
+            text: ''
+        }
+    },
+    plotOptions: {
+        line: {
+            dataLabels: {
+                enabled: true
+            },
+            enableMouseTracking: false
+        }
+    },
+    series: [{
+        name: 'Previsto',
+        color: '#73879c',
+        data: [
+		  {% for i in ORC_CON_PRE_ANO_ACU %}
+        {{i.VALOR_PREVISTO|stringformat:".2f"}},
+		  {% endfor %}
+		]
+    },{
+        name: 'Saldo',
+        color: '#1a9cbb',
+        data: [
+		  {% for i in ORC_CON_PRE_ANO_ACU %}
+        {{i.VALOR_SALDO|stringformat:".2f"}},
+		  {% endfor %}
+		]
+    }, {
+        name: 'Realizado',
+        color: '#1abb9c',
+        data: [
+        {% for i in ORC_CON_PRE_ANO_ACU %}
+        {{i.VALOR_APROVADO|stringformat:".2f"}},
+        {% endfor %}]
+    }, {
+        name: 'Projetado',
+        color: '#bb1a9c',
+        data: [
+        {% for i in ORC_CON_PRE_ANO_ACU %}
+        {{i.VALOR_PROJETADO|stringformat:".2f"}},
+        {% endfor %}]
+    }]
+});
+// End Build the chart Consumos
+</script>
+<script>
+ // Build the chart Eventos
+Highcharts.chart('containerEVE1', {
+    chart: {
+        plotBackgroundColor: null,
+        plotBorderWidth: null,
+        plotShadow: false,
+        type: 'pie'
+    },
+    subtitle: {
+        text: 'Fonte: Protheus'
+    },	
+    title: {
+        text: 'Despesas realizadas no Mês com Eventos'
+    },
+    tooltip: {
+        pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+    },
+    plotOptions: {
+        pie: {
+            allowPointSelect: true,
+            cursor: 'pointer',
+            dataLabels: {
+                enabled: false
+            },
+            showInLegend: true
+        }
+    },
+    series: [{
+        name: 'Porcentagem',
+        colorByPoint: true,
+        data: [{% for i in ORC_EVE_REL_PER %}{name: '{{i.descricao_natureza}}', y: {{i.perc|floatformat:0}}}, {% endfor %}]
+    }]
+});
+
+
+Highcharts.chart('containerEVE2', {
+    chart: {
+        type: 'column'
+    },
+    title: {
+        text: 'Histórico de Despesas no ano'
+    },
+    subtitle: {
+        text: 'Fonte: Protheus'
+    },
+    xAxis: {
+        type: 'category',
+        labels: {
+            rotation: -30,
+            style: {
+                fontSize: '11px',
+                fontFamily: 'Verdana, sans-serif'
+            }
+        }
+    },
+    yAxis: {
+        min: 0,
+        title: {
+            text: ''
+        }
+    },
+    legend: {
+        enabled: false
+    },
+    series: [{
+        name: 'Histórico de Fornecedores no ano',
+		color: '#1ABB9C',
+        data: [
+		{% for i in ORC_EVE_HIST_ANO %}
+		['{{i.ano_mes}}', {{i.tot_val|stringformat:".2f"}}],
+		{% endfor %}
+		],
+        dataLabels: {
+            enabled: true,
+            rotation: -360,
+            align: 'center',
+			color: 'black',
+            y: -5, // 10 pixels down from the top
+            style: {
+                fontSize: '11px',
+                fontFamily: 'Verdana, sans-serif'
+            }
+        }
+    }]
+});
+
+
+Highcharts.chart('containerEVE3', {
+    chart: {
+        type: 'line'
+    },
+    title: {
+        text: 'Previsto x Realizado de Despesas no Ano'
+    },
+    subtitle: {
+        text: 'Fonte: Protheus (Relizado) e SARG (Previsto)'
+    },
+    xAxis: {
+        categories: ['jan', 'fev', 'mar', 'abr', 'mai', 'jun', 'jul', 'ago', 'set', 'out', 'nov', 'dez',]
+    },
+    yAxis: {
+        title: {
+            text: ''
+        }
+    },
+    plotOptions: {
+        line: {
+            dataLabels: {
+                enabled: true
+            },
+            enableMouseTracking: false
+        }
+    },
+    series: [{
+        name: 'Previsto',
+        color: '#73879c',
+        data: [
+		  {% for i in ORC_EVE_PRE_ANO_ACU %}
+        {{i.VALOR_PREVISTO|stringformat:".2f"}},
+		  {% endfor %}
+		]
+    },{
+        name: 'Saldo',
+        color: '#1a9cbb',
+        data: [
+		  {% for i in ORC_EVE_PRE_ANO_ACU %}
+        {{i.VALOR_SALDO|stringformat:".2f"}},
+		  {% endfor %}
+		]
+    }, {
+        name: 'Realizado',
+        color: '#1abb9c',
+        data: [
+        {% for i in ORC_EVE_PRE_ANO_ACU %}
+        {{i.VALOR_APROVADO|stringformat:".2f"}},
+        {% endfor %}]
+    }, {
+        name: 'Projetado',
+        color: '#bb1a9c',
+        data: [
+        {% for i in ORC_EVE_PRE_ANO_ACU %}
+        {{i.VALOR_PROJETADO|stringformat:".2f"}},
+        {% endfor %}]
+    }]
+});
+
+// End Build the chart Eventos
+</script>
+<script>
+ // Build the chart Fornecedores
+Highcharts.chart('containerFOR1', {
+    chart: {
+        plotBackgroundColor: null,
+        plotBorderWidth: null,
+        plotShadow: false,
+        type: 'pie'
+    },
+    subtitle: {
+        text: 'Fonte: Protheus'
+    },	
+    title: {
+        text: 'Despesas realizadas no Mês com Fornecedores'
+    },
+    tooltip: {
+        pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+    },
+    plotOptions: {
+        pie: {
+            allowPointSelect: true,
+            cursor: 'pointer',
+            dataLabels: {
+                enabled: false
+            },
+            showInLegend: true
+        }
+    },
+    series: [{
+        name: 'Porcentagem',
+        colorByPoint: true,
+        data: [{% for i in ORC_FOR_REL_PER %}{name: '{{i.descricao_natureza}}', y: {{i.perc|floatformat:0}}}, {% endfor %}]
+    }]
+});
+
+
+Highcharts.chart('containerFOR2', {
+    chart: {
+        type: 'column'
+    },
+    title: {
+        text: 'Histórico de Despesas no ano'
+    },
+    subtitle: {
+        text: 'Fonte: Protheus'
+    },
+    xAxis: {
+        type: 'category',
+        labels: {
+            rotation: -30,
+            style: {
+                fontSize: '11px',
+                fontFamily: 'Verdana, sans-serif'
+            }
+        }
+    },
+    yAxis: {
+        min: 0,
+        title: {
+            text: ''
+        }
+    },
+    legend: {
+        enabled: false
+    },
+    series: [{
+        name: 'Histórico de Fornecedores no ano',
+		color: '#1ABB9C',
+        data: [
+		{% for i in ORC_FOR_HIST_ANO %}
+		['{{i.ano_mes}}', {{i.tot_val|stringformat:".2f"}}],
+		{% endfor %}
+		],
+        dataLabels: {
+            enabled: true,
+            rotation: -360,
+            align: 'center',
+			color: 'black',
+            y: -5, // 10 pixels down from the top
+            style: {
+                fontSize: '11px',
+                fontFamily: 'Verdana, sans-serif'
+            }
+        }
+    }]
+});
+
+
+Highcharts.chart('containerFOR3', {
+    chart: {
+        type: 'line'
+    },
+    title: {
+        text: 'Previsto x Realizado de Despesas no Ano'
+    },
+    subtitle: {
+        text: 'Fonte: Protheus (Relizado) e SARG (Previsto)'
+    },
+    xAxis: {
+        categories: ['jan', 'fev', 'mar', 'abr', 'mai', 'jun', 'jul', 'ago', 'set', 'out', 'nov', 'dez',]
+    },
+    yAxis: {
+        title: {
+            text: ''
+        }
+    },
+    plotOptions: {
+        line: {
+            dataLabels: {
+                enabled: true
+            },
+            enableMouseTracking: false
+        }
+    },
+    series: [{
+        name: 'Previsto',
+        color: '#73879c',
+        data: [
+		  {% for i in ORC_FOR_PRE_ANO_ACU %}
+        {{i.VALOR_PREVISTO|stringformat:".2f"}},
+		  {% endfor %}
+		]
+    },{
+        name: 'Saldo',
+        color: '#1a9cbb',
+        data: [
+		  {% for i in ORC_FOR_PRE_ANO_ACU %}
+        {{i.VALOR_SALDO|stringformat:".2f"}},
+		  {% endfor %}
+		]
+    }, {
+        name: 'Realizado',
+        color: '#1abb9c',
+        data: [
+        {% for i in ORC_FOR_PRE_ANO_ACU %}
+        {{i.VALOR_APROVADO|stringformat:".2f"}},
+        {% endfor %}]
+    }, {
+        name: 'Projetado',
+        color: '#bb1a9c',
+        data: [
+        {% for i in ORC_FOR_PRE_ANO_ACU %}
+        {{i.VALOR_PROJETADO|stringformat:".2f"}},
+        {% endfor %}]
+    }]
+});
+// End Build the chart Fornecedores
+</script>
+<script>
+ // Build the chart Viagens
+Highcharts.chart('containerVIG1', {
+    chart: {
+        plotBackgroundColor: null,
+        plotBorderWidth: null,
+        plotShadow: false,
+        type: 'pie'
+    },
+    subtitle: {
+        text: 'Fonte: Protheus'
+    },	
+    title: {
+        text: 'Despesas realizadas no Mês com Viagens'
+    },
+    tooltip: {
+        pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+    },
+    plotOptions: {
+        pie: {
+            allowPointSelect: true,
+            cursor: 'pointer',
+            dataLabels: {
+                enabled: false
+            },
+            showInLegend: true
+        }
+    },
+    series: [{
+        name: 'Porcentagem',
+        colorByPoint: true,
+        data: [{% for i in ORC_VIG_REL_PER %}{name: '{{i.descricao_natureza}}', y: {{i.perc|floatformat:0}}}, {% endfor %}]
+    }]
+});
+
+
+Highcharts.chart('containerVIG2', {
+    chart: {
+        type: 'column'
+    },
+    title: {
+        text: 'Histórico de Despesas no ano'
+    },
+    subtitle: {
+        text: 'Fonte: Protheus'
+    },
+    xAxis: {
+        type: 'category',
+        labels: {
+            rotation: -30,
+            style: {
+                fontSize: '11px',
+                fontFamily: 'Verdana, sans-serif'
+            }
+        }
+    },
+    yAxis: {
+        min: 0,
+        title: {
+            text: ''
+        }
+    },
+    legend: {
+        enabled: false
+    },
+    series: [{
+        name: 'Histórico de Consumos no ano',
+		color: '#1ABB9C',
+        data: [
+		{% for i in ORC_VIG_HIST_ANO %}
+		['{{i.ano_mes}}', {{i.tot_val|stringformat:".2f"}}],
+		{% endfor %}
+		],
+        dataLabels: {
+            enabled: true,
+            rotation: -360,
+            align: 'center',
+			color: 'black',
+            y: -5, // 10 pixels down from the top
+            style: {
+                fontSize: '11px',
+                fontFamily: 'Verdana, sans-serif'
+            }
+        }
+    }]
+});
+
+
+Highcharts.chart('containerVIG3', {
+    chart: {
+        type: 'line'
+    },
+    title: {
+        text: 'Previsto x Realizado de Despesas no Ano'
+    },
+    subtitle: {
+        text: 'Fonte: Protheus (Relizado) e SARG (Previsto)'
+    },
+    xAxis: {
+        categories: ['jan', 'fev', 'mar', 'abr', 'mai', 'jun', 'jul', 'ago', 'set', 'out', 'nov', 'dez',]
+    },
+    yAxis: {
+        title: {
+            text: ''
+        }
+    },
+    plotOptions: {
+        line: {
+            dataLabels: {
+                enabled: true
+            },
+            enableMouseTracking: false
+        }
+    },
+    series: [{
+        name: 'Previsto',
+        color: '#73879c',
+        data: [
+		  {% for i in ORC_VIG_PRE_ANO_ACU %}
+        {{i.VALOR_PREVISTO|stringformat:".2f"}},
+		  {% endfor %}
+		]
+    },{
+        name: 'Saldo',
+        color: '#1a9cbb',
+        data: [
+		  {% for i in ORC_VIG_PRE_ANO_ACU %}
+        {{i.VALOR_SALDO|stringformat:".2f"}},
+		  {% endfor %}
+		]
+    }, {
+        name: 'Realizado',
+        color: '#1abb9c',
+        data: [
+        {% for i in ORC_VIG_PRE_ANO_ACU %}
+        {{i.VALOR_APROVADO|stringformat:".2f"}},
+        {% endfor %}]
+    }, {
+        name: 'Projetado',
+        color: '#bb1a9c',
+        data: [
+        {% for i in ORC_VIG_PRE_ANO_ACU %}
+        {{i.VALOR_PROJETADO|stringformat:".2f"}},
+        {% endfor %}]
+    }]
+});
+// End Build the chart Viagens
+</script>
+<script>
+// Build the chart Sem Classificação
+Highcharts.chart('containerSEM1', {
+    chart: {
+        plotBackgroundColor: null,
+        plotBorderWidth: null,
+        plotShadow: false,
+        type: 'pie'
+    },
+    subtitle: {
+        text: 'Fonte: Protheus'
+    },	
+    title: {
+        text: 'Despesas realizadas no Mês com Sem Classificação'
+    },
+    tooltip: {
+        pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+    },
+    plotOptions: {
+        pie: {
+            allowPointSelect: true,
+            cursor: 'pointer',
+            dataLabels: {
+                enabled: false
+            },
+            showInLegend: true
+        }
+    },
+    series: [{
+        name: 'Porcentagem',
+        colorByPoint: true,
+        data: [{% for i in ORC_SEM_REL_PER %}{name: '{{i.descricao_natureza}}', y: {{i.perc|floatformat:0}}}, {% endfor %}]
+    }]
+});
+
+
+Highcharts.chart('containerSEM2', {
+    chart: {
+        type: 'column'
+    },
+    title: {
+        text: 'Histórico de Despesas no ano'
+    },
+    subtitle: {
+        text: 'Fonte: Protheus'
+    },
+    xAxis: {
+        type: 'category',
+        labels: {
+            rotation: -30,
+            style: {
+                fontSize: '11px',
+                fontFamily: 'Verdana, sans-serif'
+            }
+        }
+    },
+    yAxis: {
+        min: 0,
+        title: {
+            text: ''
+        }
+    },
+    legend: {
+        enabled: false
+    },
+    series: [{
+        name: 'Histórico de Sem Classficação no ano',
+		color: '#1ABB9C',
+        data: [
+		{% for i in ORC_SEM_HIST_ANO %}
+		['{{i.ano_mes}}', {{i.tot_val|stringformat:".2f"}}],
+		{% endfor %}
+		],
+        dataLabels: {
+            enabled: true,
+            rotation: -360,
+            align: 'center',
+			color: 'black',
+            y: -5, // 10 pixels down from the top
+            style: {
+                fontSize: '11px',
+                fontFamily: 'Verdana, sans-serif'
+            }
+        }
+    }]
+});
+
+Highcharts.chart('containerSEM3', {
+    chart: {
+        type: 'line'
+    },
+    title: {
+        text: 'Previsto x Realizado de Despesas no Ano'
+    },
+    subtitle: {
+        text: 'Fonte: Protheus (Relizado) e SARG (Previsto)'
+    },
+    xAxis: {
+        categories: ['jan', 'fev', 'mar', 'abr', 'mai', 'jun', 'jul', 'ago', 'out', 'nov', 'dez',]
+    },
+    yAxis: {
+        title: {
+            text: ''
+        }
+    },
+    plotOptions: {
+        line: {
+            dataLabels: {
+                enabled: true
+            },
+            enableMouseTracking: false
+        }
+    },
+    series: [{
+        name: 'Previsto',
+        color: '#73879c',
+        data: [
+		{% for iP in ORC_SEM_PRE_ANO_ACU %}
+		{% for iR in ORC_SEM_HIST_ANO %}
+		{% if iP.mes in iR.ano_mes %}
+		{{iP.valor|stringformat:".2f"}},
+		{% endif %}
+		{% endfor %}
+		{% endfor %}
+		]
+    },{
+        name: 'Saldo',
+        color: '#1a9cbb',
+        data: [
+		  {% for i in ORC_SEM_PRE_ANO_ACU %}
+        {{i.VALOR_SALDO|stringformat:".2f"}},
+		  {% endfor %}
+		]
+    }, {
+        name: 'Realizado',
+        color: '#1abb9c',
+        data: [{% for i in ORC_SEM_HIST_ANO %}
+		{{i.tot_val|stringformat:".2f"}},
+		{% endfor %}]
+    }, {
+        name: 'Projetado',
+        color: '#bb1a9c',
+        data: [
+        {% for i in ORC_SEM_HIST_ANO %}
+        {{i.VALOR_PROJETADO|stringformat:".2f"}},
+        {% endfor %}]
+    }]
+});
+// End Build the chart Sem Classificação
+ </script>
+ 
+<!-- /scripts content -->
+   </body>
+</html>

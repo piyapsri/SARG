@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+	<head>   
+      {% include "sarg/include/header.html" %}
+	<style>
+	div.border_panel {
+		border-style: solid !important;
+		border-width: 2px !important;
+		border-color: black !important;	
+	}
+	p.title {
+		font-size: 50px; 
+		color: black;"
+	}
+	</style> 	  
+      <title>Incidentes</title>
+   </head>  
+   <body class="nav-md" style="background-color: white">   
+      <div class="x_panel">
+		<div class="x_title" style="border-bottom-color:black;">
+			<p style="font-size: 60px; color: black;" >PAINEL DE INCIDENTES<span style="font-size: 40px; color: black;"> &Uacuteltima atualiza&ccedil;&atilde;o: {{data}}</span></p>		
+		</div>
+		<div class="row">
+			<div class="col-xs-12 tile_count" align="center" style="color: black;">
+			
+				<div class="col-xs-12 col-sm-4 tile_stats_count">
+						{% if TOTAL_OCORRENCIAS_EM_ABERTO <= 50 %}
+						<span class="count green" style="font-size: 50px">	
+							<i class="fa fa-check-circle"></i>
+						{% elif TOTAL_OCORRENCIAS_EM_ABERTO > 50 %}
+						<span class="count red" style="font-size: 50px">
+							<i class="fa fa-times-circle"></i>				
+						{% endif %}
+						</span>	
+						<span style="font-size: 50px;">		
+							Total em Aberto: <span style="font-size: 50px; font-weight: bold;">	{{TOTAL_OCORRENCIAS_EM_ABERTO}}</span>
+						</span>
+				</div>
+				
+				<div class="col-xs-12 col-sm-4 tile_stats_count">
+					<span class="count" style="font-size: 50px">
+						<i class="fa fa-comment-o"></i> 
+					</span>
+					<span style="font-size: 50px">
+						Abertos no M&ecirc;s: <span style="font-size: 50px; font-weight: bold;">{{TOTAL_OCORRENCIAS_ABERTAS_NO_MES}} </span>
+					</span>					
+				</div>
+				
+				<div class="col-xs-12 col-sm-4 tile_stats_count">
+					<span class="count" style="font-size: 50px">
+						<i class="fa fa-comments-o"></i> 
+					</span>
+					<span style="font-size: 50px">
+						Encerrados no M&ecirc;s: <span style="font-size: 50px; font-weight: bold;">{{TOTAL_OCORRENCIAS_ENCERRADAS_MES_ATUAL}}</span>
+					</span>						
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-6 col-xs-12">
+				<div class="x_panel border_panel" >
+					<div class="x_title" align="center">
+						<p class="title" >
+							Em Aberto
+						</p>
+						<div class="clearfix"></div>
+					</div>
+					<div class="x_content">
+						<div id="container" style="width: auto; height: 650px; margin: 0 auto"></div>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-6 col-xs-12">
+				<!--<div class="x_panel" style=" border-style:solid; border-width: 2px; border-color:black;"> -->			
+				<div class="x_panel border_panel">
+					<div class="x_title" align="center" >
+						<p class="title">
+							Encerrados em {{data|date:"M/Y"}}
+						</p>
+						<div class="clearfix"></div>
+					</div>
+					<div class="x_content">
+						<div id="container1" style="width: auto; height: 650px; margin: 0 auto"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+      <!-- scripts content -->
+      {% include "sarg/include/scripts.html" %}
+      <script>
+         Highcharts.chart('container', {
+             chart: {
+                type: 'column',
+				spacingTop: 20,
+             },
+             title: {
+                 text: '',
+             },
+             exporting: {
+                enabled: false
+             },
+             xAxis: {
+                 categories: [{% for VALUE in OCORRENCIAS_EM_ABERTO %}'{{VALUE.servico}}',{% endfor %}],
+                 labels: {
+                     rotation: -60,
+                     style: {
+                         fontSize: '35px',
+						 color: 'black',
+                         fontFamily: 'Verdana, sans-serif',
+						 width:'200px',// not work for text without empty space
+						 wordWrap: 'break-word',//no use		
+                     },
+					 formatter: function () {//use formatter to break word.
+						 return '<div align="center" style="word-wrap: break-word;word-break: break-all;width:50px">' + this.value + '</div>';
+					 }					 
+                 }				 
+             },
+             yAxis: {
+                 min: 0,
+                 title: {
+                     text: '',
+                 },
+				 labels: {
+				 			rotation: -0,
+				 			style: {
+				 				fontSize: '35px',
+				 				fontFamily: 'Verdana, sans-serif',
+								color: 'black',
+				 			}
+				 		},				 
+				 		stackLabels: {
+				 			enabled: true,
+				 			style: {
+				 				fontSize: '35px',
+				 				color: (Highcharts.theme && Highcharts.theme.textColor) || 'Verdana, sans-serif'
+				 			}
+				 		}
+				 	},
+				 	 legend: {
+						 symbolHeight: 35,
+						 symbolPadding: 20,
+							 itemStyle: {
+								 font: '35px Verdana',
+								 color: 'black',
+							 },
+					 },
+					 tooltip: {
+						headerFormat: '<b>{point.x}</b><br/>',
+						pointFormat: '{series.name}: {point.y}<br/>Total: {point.stackTotal}'
+					 },
+					 plotOptions: {
+						column: {
+							stacking: 'normal',
+							series: {
+								pointWidth: 30
+							},				 
+							dataLabels: {
+								formatter:function() {
+									if(this.y != 0) {
+									return this.y;
+									}
+								},							
+								enabled: true,
+								allowOverlap: true,
+								
+									color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'white',
+									style: {
+										fontSize: '35px',
+										fontFamily: 'Verdana, sans-serif'
+									}						 
+							}
+						}
+					 },
+					series: [{
+						name: 'Aguardando',
+						color: '#73879C',
+						fontSize: '35px',				
+						data: [{% for VALUE in OCORRENCIAS_EM_ABERTO %}{{VALUE.aguardando}},{% endfor %}]
+                 
+					},
+					{	name: 'Atendimento',
+						color: '#0080FF',
+						data: [{% for VALUE in OCORRENCIAS_EM_ABERTO %}{{VALUE.atendimento}},{% endfor %}]
+                 
+					},
+					{
+						name: 'Encaminhado',
+						color: '#1ABB9C',
+						data: [{% for VALUE in OCORRENCIAS_EM_ABERTO %}{{VALUE.encaminhado}},{% endfor %}]	
+             }]
+         });
+		  </script>
+		   <script>
+         Highcharts.chart('container1', {
+             chart: {
+                 type: 'column',
+				 spacingTop: 20
+             },
+             title: {
+                 text: ''
+             },
+             exporting: {
+                enabled: false
+             },
+             xAxis: {
+                 type: 'category',
+                 labels: {
+                     rotation: -70,
+                     style: {
+                         fontSize: '35px',
+						 color: 'black',
+                         fontFamily: 'Verdana, sans-serif',
+						 width:'200px',// not work for text without empty space
+						 wordWrap: 'break-word',//no use		
+                     },
+					formatter: function () {//use formatter to break word.
+						return '<div align="center" style="word-wrap: break-word;word-break: break-all;width:50px">' + this.value + '</div>';
+					}
+                 }
+             },
+             yAxis: {
+                 min: 0,
+                 tickInterval: 5,
+                 title: {
+                     text: ''
+                 },
+                 labels: {
+                     rotation: -0,
+                     style: {
+                         fontSize: '35px',
+						 color: 'black',
+                         fontFamily: 'Verdana, sans-serif'
+                     }
+                 }				 
+             },
+			  legend: {
+			 	 symbolHeight: 35,
+			 	 symbolPadding: 20,
+			 		 itemStyle: {
+			 			 font: '35px Verdana',
+						 color: 'black',
+						 padding: 10,
+			 		 },
+			 },
+					 tooltip: {
+						pointFormat: '{series.name}: {point.y}<br/> {point.stackTotal}'
+					 },
+             series: [{
+                 name: 'Chamados Encerrados',
+         		color: '#1ABB9C',
+                 data: [
+					{% for VALUE in OCORRENCIAS_ENCERRADAS_MES_ATUAL %}
+					['{{VALUE.tipo_servico}}', {{VALUE.total}},],
+					{% endfor %}	
+                 ],
+                 dataLabels: {
+                     enabled: true,
+                     rotation: -360,
+                     align: 'center',
+         			 color: 'black',
+                     y: -5, // 10 pixels down from the top
+                     style: {
+                         fontSize: '35px',
+                         fontFamily: 'Verdana, sans-serif',
+						 fontStyle: 'bold',						 
+						 fontWeight: 'normal',
+                     }
+                 }
+             }]
+         });
+      </script>
+      <!-- /scripts content -->
+   </body>
+</html>

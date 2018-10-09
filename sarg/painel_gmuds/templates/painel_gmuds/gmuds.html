@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+   <head>
+      {% include "sarg/include/header.html" %}
+      <title>GMUDs | SARG | Sistema de Análise e Relatórios de Gestão</title>
+      <style>
+         #datatable-responsive tbody tr td{
+         vertical-align: middle !important;
+         }
+      </style>
+   </head>
+   <body class="nav-md">
+      <div class="container body">
+         <div class="main_container">
+            {% include "sarg/include/left.html" %}
+         </div>
+      </div>
+      <!-- top navigation -->
+      {% include "sarg/include/top_navegation.html" %} 
+      <!-- /top navigation -->
+      <!-- page content -->
+      <div class="right_col" role="main">
+         <!-- top tiles -->
+         <div class="row">
+            <div class="col-xs-12 col-sm-6">
+               <h1>Painel de GMUDs</h1>
+            </div>
+            <div class="col-xs-12 col-sm-6" style="text-align: right;">
+               <h6>Última atualização: {{data}}hrs</h6>
+               <h6>Fonte: Sistema SARG</h6>
+            </div>
+         </div>
+         <!-- /top tiles -->
+         <div class="row tile_count">
+            <div class="col-sm-4 col-xs-6 tile_stats_count">
+               <span class="count_top">Total de GMUDs</span>
+               <div class="count"><i class="fa fa-cogs"></i> {{ amount_gmuds }}</div>
+            </div>
+         </div>
+         <div class="col-md-13 col-sm-13 col-xs-13">
+            <div class="x_panel">
+               <div class="x_title">
+                  <ul class="nav navbar-right panel_toolbox">
+                     <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                     </li>
+                     <li><a class="close-link"><i class="fa fa-close"></i></a>
+                     </li>
+                  </ul>
+                  <div class="clearfix"></div>
+               </div>
+               <div class="x_content">
+                  <!-- start project list -->
+                  <table id="datatable-buttons" class="table table-striped projects" cellspacing="0" width="100%">
+                     <thead>
+                        <tr>
+                           <th style="width: 13%">Cliente</th>
+                           <th style="width: 15%">Data</th>
+                           <th style="width: 15%">Serviço</th>
+                           <th style="width: 15%">Responsável</th>
+                           <th>Título</th>
+                        </tr>
+                     </thead>
+                     <tbody>
+                        {% for value in Gmuds %}
+                        {% if value.status == 'Ativa' %}
+                        <tr>
+                           <td>
+                              <div class="logotipo" style="background:url(/media/{{ value.cliente.logo }})"></div>
+                              <label style="display:none">{{ value.cliente.cliente }}</label>
+                           </td>
+                           <td>
+                              {{ value.data }} 									
+                           </td>
+                           <td>
+                              {{ value.servico}} 									
+                           </td>
+                           <td>
+                              {{ value.responsavel}} 									
+                           </td>
+                           <td>
+                              <a>{{ value.titulo }}</a>  														
+                           </td>
+                        </tr>
+                        {% endif %}
+                        {% endfor %}
+                     </tbody>
+                  </table>
+                  <!-- end project list -->
+               </div>
+            </div>
+         </div>
+      </div>
+      <!-- /page content -->
+      <!-- footer content -->
+      {% include "sarg/include/footer.html" %}
+      <!-- /footer content -->
+      <!-- scripts content -->
+      {% include "sarg/include/scripts.html" %}
+      <!-- /scripts content -->
+   </body>
+</html>

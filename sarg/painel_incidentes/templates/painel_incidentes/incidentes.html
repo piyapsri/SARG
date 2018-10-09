@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+   <head>
+      {% include "sarg/include/header.html" %}
+      <title>Incidentes | SARG | Sistema de Análise e Relatórios de Gestão</title>
+   </head>
+   <body class="nav-md">
+      <div class="container body">
+         <div class="main_container">
+            {% include "sarg/include/left.html" %}
+         </div>
+      </div>
+      <!-- top navigation -->
+      {% include "sarg/include/top_navegation.html" %}
+      <!-- /top navigation -->
+      <!-- page content -->
+      <div class="right_col" role="main">
+         <div class="row">
+            <div class="col-xs-12 col-sm-6">
+               <h1>Painel de Incidentes  {% for i in OCORRENCIAS_EM_ABERTO %} {{i.SERVICO}} {% endfor %}</h1>
+            </div>
+            <div class="col-xs-12 col-sm-6" style="text-align: right;">
+               <h6>Última atualização: {{data}}hrs</h6>
+               <h6>Fonte: Dynamics CRM</h6>
+            </div>
+         </div>
+         <!-- top tiles -->
+         <div class="row tile_count">
+            <div class="col-sm-4 col-xs-6 tile_stats_count">
+               <span class="count_top">Total em Aberto </span>
+               {% if TOTAL_OCORRENCIAS_EM_ABERTO <= 50 %}
+               <div class="count green"><i class="fa fa-check-circle"></i> {{TOTAL_OCORRENCIAS_EM_ABERTO}}</div>
+               {% elif TOTAL_OCORRENCIAS_EM_ABERTO > 50 %}
+               <div class="count red"><i class="fa fa-times-circle"></i> {{TOTAL_OCORRENCIAS_EM_ABERTO}}</div>
+               {% endif %}
+               <!--  <span class="count_bottom"><i class="green">{{QTD_CHM_INTERNOS}} </i> - Internos</span>
+                  <span class="count_bottom"><i class="red">{{QTD_CHM_EXTERNOS}} </i> - Externos</span> -->
+            </div>
+            <div class="col-sm-4 col-xs-6 tile_stats_count">
+               <span class="count_top">Abertos no Mês</span>
+               <div class="count"><i class="fa fa-comment-o"></i> {{TOTAL_OCORRENCIAS_ABERTAS_NO_MES}}</div>
+            </div>
+            <div class="col-sm-4 col-xs-6 tile_stats_count">
+               <span class="count_top">Encerrados no Mês</span>
+               <div class="count"><i class="fa fa-comments-o"></i> {{TOTAL_OCORRENCIAS_ENCERRADAS_MES_ATUAL}}</div>
+            </div>
+         </div>
+         <!-- /top tiles -->
+         <div class="row">
+            <div class="col-xs-12">
+               <div class="x_panel">
+                  <div class="x_title">
+                     <ul class="nav navbar-right panel_toolbox">
+                        <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                        </li>
+                        <li><a class="close-link"><i class="fa fa-close"></i></a>
+                        </li>
+                     </ul>
+                     <div class="clearfix"></div>
+                  </div>
+                  <div class="x_content">
+                     <div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+                  </div>
+               </div>
+            </div>
+            <div class="col-xs-12">
+               <div class="x_panel">
+                  <div class="x_title">
+                     <ul class="nav navbar-right panel_toolbox">
+                        <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                        </li>
+                        <li><a class="close-link"><i class="fa fa-close"></i></a>
+                        </li>
+                     </ul>
+                     <div class="clearfix"></div>
+                  </div>
+                  <div class="x_content">
+                     <div id="container1" style="min-width: 300px; height: 400px; margin: 0 auto"></div>
+                  </div>
+               </div>
+            </div>
+         </div>
+         <div class="modal fade" id="detalhamento_ocorrencias" role="dialog">
+            <div class="modal-dialog modal-lg" style="width: 85%;">
+               <!-- Modal content-->
+               <div class="modal-content">
+                  <div class="modal-header">
+                     <button type="button" class="close" data-dismiss="modal">&times;</button>
+                     <h4 class="modal-title">Detalhamento <span id="tipoOcorrenciaTitulo"></span></h4>
+                  </div>
+                  <div class="modal-body">
+                     <p>Some text in the modal.</p>
+                  </div>
+                  <div class="modal-footer">
+                     <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+      <!-- /page content -->
+      <!-- footer content -->
+      {% include "sarg/include/footer.html" %}
+      <!-- /footer content -->
+      <!-- scripts content -->
+      {% include "sarg/include/scripts.html" %}
+
+	  <script>
+         Highcharts.chart('container', {
+            chart: {
+               type: 'column'
+            },
+            title: {
+               text: 'Em aberto'
+            },
+			subtitle: {
+                 text: ''
+             },
+            xAxis: {
+               categories: [{% for VALUE in OCORRENCIAS_EM_ABERTO %}'{{VALUE.servico}}',{% endfor %}]
+            },
+            yAxis: [{
+               min: 0,
+               title: {
+                  text: ''
+               },
+               stackLabels: {
+                  enabled: true,
+                  style: {
+                     fontWeight: 'bold',
+                     fontSize: '11px',
+                     color: (Highcharts.theme && Highcharts.theme.textColor) || 'black'
+                  }
+               }
+            },{
+               title: {
+                  text: '',
+               },
+               opposite: true
+            }],
+            legend: {
+               /*
+               align: 'right',
+               x: -30,
+               verticalAlign: 'top',
+               y: 25,
+               floating: true,
+               */
+               align: 'center',
+               verticalAlign: 'top',
+               floating: false,
+               backgroundColor: (Highcharts.theme && Highcharts.theme.background2) || 'white',
+               borderColor: '#CCC',
+               borderWidth: 1,
+               shadow: false
+            },
+            tooltip: {
+               headerFormat: '<b>{point.x}</b><br/>',
+               pointFormat: '{series.name}: {point.y}<br/>Total: {point.stackTotal}'
+            },
+            plotOptions: {
+               column: {
+                  stacking: 'normal',
+                  dataLabels: {
+                     formatter:function() {
+                        if(this.y != 0) {
+                           return this.y;
+                        }
+                     },
+                     allowOverlap: false,
+                     enabled: true,
+                     color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'white'
+                  }
+               }
+            },	 
+            plotOptions: {
+               series: {
+                  cursor: 'pointer',
+                  point: {
+                     events: {
+                        click: function (e) {
+                           if (this.series.index == 3) { e.preventDefault(); return false; }
+                           $('#tipoOcorrenciaTitulo').html('de ocorrencias com situação: ' + this.series.name.toLowerCase());
+                           $('#detalhamento_ocorrencias .modal-body').load('ocorrencias_detalhamento.html?situacao='+this.series.name.toUpperCase()+'&tipo_servico='+encodeURI(this.category.toUpperCase()),function(){
+                              $('#detalhamento_ocorrencias').modal({show:true}, function(){return false});
+                           });
+                        }
+                     }
+                  }
+               },		 
+               column: {
+                  stacking: 'normal',
+                  dataLabels: {
+                     formatter:function() {
+                        if(this.y != 0) {
+                           return this.y;
+                        }
+                     },
+                     allowOverlap: false,
+                     enabled: true,
+                     color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'white'
+                  }
+               }
+            },			 
+            series: [{
+               name: 'Aguardando', 
+         		color: '#73879C',
+               data: [{% for VALUE in OCORRENCIAS_EM_ABERTO %}{{VALUE.aguardando}},{% endfor %}],
+            },
+            {
+               name: 'Atendimento',
+         		color: '#1ABB9C',
+               data: [{% for VALUE in OCORRENCIAS_EM_ABERTO %}{{VALUE.atendimento}},{% endfor %}],
+            },{
+               name: 'Encaminhado',
+               color: '#7CB5EC',
+               data: [{% for VALUE in OCORRENCIAS_EM_ABERTO %}{{VALUE.encaminhado}},{% endfor %}],
+            },]
+         });  	  
+	 
+         Highcharts.chart('container1', {
+             chart: {
+                 type: 'column'
+             },
+             title: {
+                 text: 'Encerrados em {{data|date:"M/Y"}}'
+             },
+             subtitle: {
+                 text: ''
+             },
+             xAxis: {
+                 type: 'category',
+                 labels: {
+                     rotation: -30,
+                     style: {
+                         fontSize: '11px',
+                         fontFamily: 'Verdana, sans-serif'
+                     }
+                 }
+             },
+             yAxis: {
+                 min: 0,
+                 title: {
+                     text: ''
+                 }
+             },
+             legend: {
+                 enabled: false
+             },
+             series: [{
+                 name: 'Encerrados em {{data|date:"M/Y"}}',
+         		color: '#1ABB9C',
+                 data: [
+				 	 {% for VALUE in OCORRENCIAS_ENCERRADAS_MES_ATUAL %}
+					 ['{{VALUE.tipo_servico}}', {{VALUE.total}},],
+					 {% endfor %}	
+                 ],
+                 dataLabels: {
+                     enabled: true,
+                     rotation: -360,
+                     align: 'center',
+                     y: -5, // 10 pixels down from the top
+                     style: {
+                         fontSize: '11px',
+                         fontFamily: 'Verdana, sans-serif'
+                     }
+                 }
+             }]
+         });
+      </script>
+      <!-- /scripts content -->
+   </body>
+</html>
+
+<script>
+Highcharts.chart('container', {
+    chart: {
+        type: 'column'
+    },
+    title: {
+        text: 'Em aberto'
+    },
+    subtitle: {
+        text: ''
+    },
+    xAxis: {
+        categories: [{ %
+                for VALUE in OCORRENCIAS_EM_ABERTO %
+            }
+            '{{VALUE.servico}}', { % endfor %
+            }
+        ]
+    },
+    yAxis: [{
+        min: 0,
+        title: {
+            text: ''
+        },
+        stackLabels: {
+            enabled: true,
+            style: {
+                fontWeight: 'bold',
+                fontSize: '11px',
+                color: (Highcharts.theme && Highcharts.theme.textColor) || 'black'
+            }
+        }
+    }, {
+        title: {
+            text: '',
+        },
+        opposite: true
+    }],
+    legend: {
+        /*
+        align: 'right',
+        x: -30,
+        verticalAlign: 'top',
+        y: 25,
+        floating: true,
+        */
+        align: 'center',
+        verticalAlign: 'top',
+        floating: false,
+        backgroundColor: (Highcharts.theme && Highcharts.theme.background2) || 'white',
+        borderColor: '#CCC',
+        borderWidth: 1,
+        shadow: false
+    },
+    tooltip: {
+        headerFormat: '<b>{point.x}</b><br/>',
+        pointFormat: '{series.name}: {point.y}<br/>Total: {point.stackTotal}'
+    },
+    plotOptions: {
+        column: {
+            stacking: 'normal',
+            dataLabels: {
+                formatter: function() {
+                    if (this.y != 0) {
+                        return this.y;
+                    }
+                },
+                allowOverlap: false,
+                enabled: true,
+                color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'white'
+            }
+        }
+    },
+    plotOptions: {
+        series: {
+            cursor: 'pointer',
+            point: {
+                events: {
+                    click: function(e) {
+                        if (this.series.index == 3) {
+                            e.preventDefault();
+                            return false;
+                        }
+                        $('#tipoOcorrenciaTitulo').html('de ocorrencias com situação: ' + this.series.name.toLowerCase());
+                        $('#detalhamento_ocorrencias .modal-body').load('ocorrencias_detalhamento.html?situacao=' + this.series.name.toUpperCase() + '&tipo_servico=' + encodeURI(this.category.toUpperCase()), function() {
+                            $('#detalhamento_ocorrencias').modal({
+                                show: true
+                            }, function() {
+                                return false
+                            });
+                        });
+                    }
+                }
+            }
+        },
+        column: {
+            stacking: 'normal',
+            dataLabels: {
+                formatter: function() {
+                    if (this.y != 0) {
+                        return this.y;
+                    }
+                },
+                allowOverlap: false,
+                enabled: true,
+                color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'white'
+            }
+        }
+    },
+    series: [{
+        name: 'Aguardando',
+        color: '#73879C',
+        data: [{ %
+            for VALUE in OCORRENCIAS_EM_ABERTO %
+        } {
+            {
+                VALUE.aguardando
+            }
+        }, { % endfor %
+        }],
+    }, {
+        name: 'Atendimento',
+        color: '#1ABB9C',
+        data: [{ %
+            for VALUE in OCORRENCIAS_EM_ABERTO %
+        } {
+            {
+                VALUE.atendimento
+            }
+        }, { % endfor %
+        }],
+    }, {
+        name: 'Encaminhado',
+        color: '#7CB5EC',
+        data: [{ %
+            for VALUE in OCORRENCIAS_EM_ABERTO %
+        } {
+            {
+                VALUE.encaminhado
+            }
+        }, { % endfor %
+        }],
+    }, ]
+});
+</script>
+
+<script>
+Highcharts.chart('container1', {
+    chart: {
+        type: 'column'
+    },
+    title: {
+        text: 'Encerrados em {{data|date:"M/Y"}}'
+    },
+    subtitle: {
+        text: ''
+    },
+    xAxis: {
+        type: 'category',
+        labels: {
+            rotation: -30,
+            style: {
+                fontSize: '11px',
+                fontFamily: 'Verdana, sans-serif'
+            }
+        }
+    },
+    yAxis: {
+        min: 0,
+        title: {
+            text: ''
+        }
+    },
+    legend: {
+        enabled: false
+    },
+    series: [{
+        name: 'Encerrados em {{data|date:"M/Y"}}',
+        color: '#1ABB9C',
+        data: [{ %
+                for VALUE in OCORRENCIAS_ENCERRADAS_MES_ATUAL %
+            }
+            ['{{VALUE.tipo_servico}}', {
+                {
+                    VALUE.total
+                }
+            }, ], { % endfor %
+            }
+        ],
+        dataLabels: {
+            enabled: true,
+            rotation: -360,
+            align: 'center',
+            y: -5, // 10 pixels down from the top
+            style: {
+                fontSize: '11px',
+                fontFamily: 'Verdana, sans-serif'
+            }
+        }
+    }]
+});         
+</script>
+      <!-- /scripts content -->
+   </body>
+</html>
+

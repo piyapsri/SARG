@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+   <head>
+      {% include "sarg/include/header.html" %}
+      <title>Oportunidades</title>
+   </head>
+   <body class="nav-md" style="background-color: white">
+      <div class="x_panel">
+      <div class="x_title">
+			<p style="font-size: 60px; color: black;" >PAINEL DE OPORTUNIDADES<span style="font-size: 40px; color: black;"> &Uacuteltima atualiza&ccedil;&atilde;o: {{data}}</span></p>		
+         <div class="clearfix"></div>
+      </div>
+	  
+     
+	  
+      <div class="row">
+      <div class="col-md-12 col-sm-6 col-xs-12">
+         <div class="x_panel" style=" border-style:solid; border-width: 2px;">
+            <div class="x_content">
+				<div id="container" style="width: auto; height: 750px; margin: 0 auto">				
+               <!-- start project list -->
+               <table class="table table-striped projects" cellspacing="0" width="100%" style="font-size: 30pt;">
+                  <thead>
+                     <tr>
+                        <th style="width: 20%; text-align:center;color: black; border-color: black;">CLIENTE</th>
+                        <th style="text-align:left; padding-left: 30px;color: black;  border-color: black;">OPORTUNIDADE</th>
+						<th style="text-align:left; padding-left: 30px;color: black;  border-color: black;">I.C</th>
+						<th style="text-align:left; padding-left: 30px;color: black;  border-color: black;">RESP.</th>						
+                        <th style="text-align:center;color: black; border-color: black;">STATUS</th>
+                     </tr>
+                  </thead>
+                  <tbody>
+                     {% for value in Oportunities %}
+					 
+                     <tr>
+                        <td style="width:100px; height:100px; text-align:center; vertical-align:middle; color: black; border-color: black;">
+                           <div class="logotipotv" style="background:url(/media/{{ value.cliente.logo }})"></div><label style="display:none">{{ value.cliente }}</label>
+                        </td>
+                        <td style="text-align:left; vertical-align:middle; padding-left: 30px; color: black; border-color: black;">
+                           {{ value.oportunidade }}                           
+                        </td>
+                        <td style="text-align:left; vertical-align:middle; padding-left: 30px; color: black; border-color: black;">
+                           {{ value.item_contabil }}                           
+                        </td>
+                        <td style="text-align:left; vertical-align:middle; padding-left: 30px; color: black; border-color: black;">
+                           {{ value.responsavel }}                           
+                        </td>							
+                        <td style="text-align:center; vertical-align:middle; color: black; border-color: black;">
+                           {% if value.status == 'Prospecção de novos negócios' %}
+                           <span style="font-size: 80px; color: gold"><i class="fa fa-plus-circle"></i></span>
+                           {% elif value.status == 'Desenvolvimento de Proposta' %}
+                           <span class="count blue" style="font-size: 80px;"><i class="fa fa-arrow-circle-right"></i></span>
+                            {% elif value.status == 'Proposta Enviada' %}							
+                           <span class="count green" style="font-size: 80px;"><i class="fa fa-check-circle"></i></span>
+                           {% endif %}
+                        </td>
+                     </tr>
+					 
+                     {% endfor %}					
+                  </tbody>
+               </table>
+               </div>
+			   <!-- end project list -->					 
+            </div>
+         </div>
+      </div>
+	 
+	   </div>
+      
+   </div>
+  
+
+  
+   <div class="row">
+      <div class="col-xs-12 tile_count" style="margin:0 !important; font-size: 45px; text-align: center; line-height: 100% !important; padding:2px !important; position: fixed !important; bottom: 0 !important;"> 
+
+         <div class="col-xs-4 tile_stats_count">
+            <span class="count" style="font-size: 50px">
+               <i class="fa fa-check-circle" style="color: #1ABB9C;"></i> 
+            </span>
+            <span style="font-size: 45px; color: black;"> 
+               Proposta Enviada
+            </span>
+         </div>
+         
+         
+         <div class="col-xs-4 tile_stats_count">
+            <span class="count" style="font-size: 50px">
+               <i class="fa fa-arrow-circle-right" style="color: #3498DB;"></i> 
+            </span>
+            <span style="font-size: 45px; color: black;"> 
+               Em Desenvolvimento
+            </span>
+         </div>
+         
+         <div class="col-xs-4 tile_stats_count">
+            <span class="count" style="font-size: 50px">
+               <i class="fa fa-plus-circle" style="color: gold;"></i> 
+            </span>
+            <span style="font-size: 45px; color: black;"> 
+               Prospec&ccedil;&atilde;o
+            </span>
+         </div>			
+
+      </div>
+   </div>	  
+      <!-- /page content -->
+      <!-- scripts content -->
+      {% include "sarg/include/scripts.html" %}
+      <!-- /scripts content -->
+   </body>
+</html>

@@ -1,0 +1,206 @@
+{% load iconOK %}
+<!DOCTYPE html>
+<html lang="pt-br">
+   <head>
+      {% include "sarg/include/header.html" %}
+      <title>Painel de Projetos | SARG | Sistema de Análise e Relatórios de Gestão</title>
+      <style>
+         #datatable-responsive tbody tr td{
+         vertical-align: middle !important;
+         }
+		 
+		 p.anti-nowrap {
+			white-space: normal !important;
+		}
+      </style>
+   </head>
+   <body class="nav-md">
+      <div class="container body">
+         <div class="main_container">
+            {% include "sarg/include/left.html" %}
+         </div>
+      </div>
+      <!-- top navigation -->
+   {% include "sarg/include/top_navegation.html" %} 
+      <!-- /top navigation -->
+      <!-- page content -->
+      <div class="right_col" role="main">
+         <!-- top tiles -->
+         <div class="row">
+            <div class="col-xs-12 col-sm-6">
+               <h1>Painel de Projetos</h1>
+            </div>
+            <div class="col-xs-12 col-sm-6" style="text-align: right;">
+               <h6>Última atualização: {{data}}hrs</h6>
+			   <h6>Fonte: Sistema SARG</h6>
+            </div>
+         </div>
+         <!-- /top tiles -->
+		 <div class="row tile_count">
+            <div class="col-sm-4 col-xs-6 tile_stats_count">
+              <span class="count_top">Total de Projetos</span>
+              <div class="count"><i class="fa fa-object-group"></i> {{ amount_projetos }}</div>
+            </div>    
+			<div class="col-sm-2 col-xs-6 tile_stats_count" style="color: #1ABB9C;">
+              <span class="count_top">Total em OK</span>
+              <div class="count"><i class="fa fa-check-circle"></i> {{ amount_projetosOK }} </div>
+            </div>
+			<div class="col-sm-2 col-xs-6 tile_stats_count" style="color: gold;">
+              <span class="count_top">Total em Atenção</span>
+              <div class="count"><i class="fa fa-exclamation-circle"></i> {{ amount_projetosAte }} </div>
+            </div>	
+			<div class="col-sm-2 col-xs-6 tile_stats_count" style="color: gray;">
+              <span class="count_top">Total Pausado</span>
+              <div class="count"><i class="fa fa-pause-circle"></i> {{ amount_projetosPau }} </div>
+            </div>	
+			<div class="col-sm-2 col-xs-6 tile_stats_count" style="color: red;">
+              <span class="count_top">Total com Problema</span>
+              <div class="count"><i class="fa fa-times-circle"></i> {{ amount_projetosPro }} </div>
+            </div>	
+			
+         </div>
+		  <div class="row">
+         <div class="col-xs-12">
+            <div class="x_panel">
+               <div class="x_title">
+                  <ul class="nav navbar-right panel_toolbox">
+                     <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                     </li>
+                     <li><a class="close-link"><i class="fa fa-close"></i></a>
+                     </li>
+                  </ul>
+                  <div class="clearfix"></div>
+               </div>
+               <div class="x_content">
+                  <!-- start project list -->
+                  <table id="datatable-buttons" class="table table-striped projects responsive nowrap" cellspacing="0" width="100%">
+                     <thead>
+                        <tr>
+                           <th nowrap>Cliente</th>
+                           <th nowrap style="width:265px;">Projeto</th>
+                           <th nowrap style="width:40px; text-align:left; vertical-align:center;">Status</th>
+                           <th nowrap style="width:65px; text-align:right; vertical-align:center;">Item Cont&aacute;bil</th>
+                           <th nowrap style="width:65px; text-align:right; vertical-align:center;">Hrs Previstas</th>
+                           <th nowrap style="width:65px; text-align:right; vertical-align:center;">Hrs Realizadas</th>	   
+                           <th nowrap>GP</th>
+                           <th nowrap>Progresso</th>
+						   <th>Observação:</th>
+                        </tr>	
+                     </thead>
+                     <tbody>
+
+                     {% for value in Projects %}
+					{% if value.status != '5' %}
+                        <tr>
+                           <td>
+                              <div class="logotipo" style="background:url(/media/{{ value.cliente.logo }})"></div><label style="display:none">{{ value.cliente.cliente }}</label>
+                           </td>
+                           <td>
+                             {{ value.projeto }}
+                              <br />
+                              <small>Data início: {{ value.data_inicio }}</small>								
+                           </td>
+                           <td style="text-align:left; vertical-align:middle;">
+                              {% if value.status == '1' %}
+                              <span class="count green" style="font-size: 40px;"><i class="fa fa-check-circle" style="color: #1ABB9C;"></i></span>
+                              {% elif value.status == '2' %}
+                              <span class="count blue" style="font-size: 40px;"><i class="fa fa-exclamation-circle" style="color: gold;"></i></span>
+                              {% elif value.status == '3' %}
+                              <span style="font-size: 40px; color: gold"><i class="fa fa-times-circle" style="color: red;"></i></span>							
+                              {% elif value.status == '4' %}
+                              <span style="font-size: 40px; color: gold"><i class="fa fa-pause-circle" style="color: gray;"></i></span>
+                              {% endif %}
+                           </td>						   
+                           <td style="text-align:center; vertical-align:center;">
+                              {{ value.item_contabil.cod_item_contabil }}
+                           </td>
+                           <td style="text-align:center; vertical-align:middle;">
+                              <span class="label label-default">{{value.horas_previstas}}</span>									
+                           </td>
+			   
+                           {% for horas in horas_ongoing %}
+                              {% if horas.item_contabil == value.item_contabil.cod_item_contabil and horas.id == value.id %}
+                                    {% if horas.hora_total > value.horas_previstas %}
+                                    <td style="text-align:center; vertical-align:middle;">
+                                       <span class="label label-danger">{{horas.hora_total|default:"0"|floatformat:0}}</span>
+                                    </td>
+                                    {% else %}
+                                    <td style="text-align:center; vertical-align:middle;">
+                                       <span class="label" style="background-color: #1ABB9C;">{{horas.hora_total|default:"0"|floatformat:0}}</span>
+                                    </td>
+                                    {% endif %}
+
+                              {% endif %}
+
+                          {% endfor %}				  
+                           <td style="text-align:left">
+                            {{value.gp}}
+                           </td>
+                           <td class="project_progress">
+                              <div class="progress progress_sm">
+                                 <div class="progress-bar bg-green " role="progressbar" data-transitiongoal="{{ value.percent_conclusao }} aria-valuemin="0" aria-valuemax="100"></div>
+                              </div>
+                              <small>{{ value.percent_conclusao }} Completo</small>
+                           </td>	
+						   <td class="b"><p class="anti-nowrap">{{ value.obs }}</p></td>		
+                        </tr>
+						{% endif %}
+                     {% endfor %}
+                     </tbody>
+                  </table>
+                <!-- end project list -->
+				
+	<!--			<div class="row tile_count" style="font-size: 14px;" align="center"> 
+                        <div class="col-xs-3 tile_stats_count">
+                           <span class="count" style="font-size:14px">
+                           <i class="fa fa-check-circle" style="color: #1ABB9C;"></i>
+                           </span>				
+                           <span style="font-size: 14px;"> 
+                            OK
+                           </span>
+                        </div>
+                        <div class="col-xs-3 tile_stats_count">
+                           <span class="count" style="font-size:14px">
+                           <i class="fa fa-exclamation-circle" style="color: gold;"></i>
+                           </span>
+                           <span style="font-size: 14px; style=color: gold;"> 						   
+                           Atenção</span>
+                           </span>
+                        </div>
+                        <div class="col-xs-3 tile_stats_count">
+                           <span class="count" style="font-size:14px">
+                           <i class="fa fa-pause-circle" style="color: gray;"></i>
+                           </span>
+                           <span style="font-size: 14px;"> 
+                           Pausado
+                           </span>
+                        </div>
+						<div class="col-xs-3 tile_stats_count">
+                           <span class="count" style="font-size:14px">
+                           <i class="fa fa-times-circle" style="color: red;"></i>
+                           </span>
+                           <span style="font-size: 14px;"> 
+                           Problema
+                           </span>
+                        </div>
+                     </div>   -->
+					 
+					 
+               </div>
+            </div>
+         </div>
+		 </div>
+      </div>
+      </div>
+      </div>
+      <!-- /page content -->
+      <!-- footer content -->
+      {% include "sarg/include/footer.html" %}
+      <!-- /footer content -->
+      </div>
+      </div>
+      <!-- scripts content -->
+      {% include "sarg/include/scripts.html" %}
+      <!-- /scripts content -->
+   </body>
+</html>

@@ -1,0 +1,49 @@
+
+									<div class="modal-header">
+									<button type="button" class="close" data-dismiss="modal">&times;</button>
+									<h4 class="modal-title">Detalhamento de Depesa(s)</h4>
+									<h6>Fonte: Sistema SARG</h6>
+									</div>
+									<div class="modal-body">
+
+
+											 <table id="datatable-responsive" class="table table-striped projects" cellspacing="0" width="100%">
+												<thead>
+												<tr>
+													<!--<th>I.C</th> -->
+													<th>I.C | Despesa</th>
+													<th>Natureza</th>				   
+													<th>Valor</th>					   
+												</tr>
+												</thead>
+												<tbody>	
+												{% for i in ORC_REL_IC_DET %}
+												<tr style="text-align:left">									
+													<td>
+													<b>{{i.item_contabil}}</b> | {{i.grupo_despesa}}
+													</td>
+													<td>
+													{{i.descricao_natureza}}
+													</td>													
+													<td>
+													{{i.tot_val|floatformat:2}}
+													</td>
+												</tr>
+												{% endfor %}
+											</tbody>
+											
+       <tfoot>
+            <tr>
+			{% for i in ORC_REL_IC_DET_TOT %}
+                <th colspan="4" style="text-align:right">Total:  {{i.valor|floatformat:2}} </th>
+           {% endfor %} 
+
+            </tr>
+        </tfoot> 
+											</table>        
+									
+									</div>
+									<div class="modal-footer">
+									<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+									</div>
+

@@ -1,0 +1,6 @@
+#!/usr/bin/env python
+import os
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "sarg.settings")
+
+from django.contrib.auth.models import User
+User.objects.create_superuser('admin', 'admin@example.com', 'admin')

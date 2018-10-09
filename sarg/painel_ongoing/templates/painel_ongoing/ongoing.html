@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+   <head>
+      {% include "sarg/include/header.html" %}
+      <title>Horas Ongoing | SARG | Sistema de Análise e Relatórios de Gestão</title>
+      <style>
+         #datatable-responsive tbody tr td{
+         vertical-align: middle !important;
+         }
+      </style>
+   </head>
+   <body class="nav-md">
+      <div class="container body">
+         <div class="main_container">
+            {% include "sarg/include/left.html" %}
+         </div>
+      </div>
+      <!-- top navigation -->
+      {% include "sarg/include/top_navegation.html" %} 
+      <!-- /top navigation -->
+      <!-- page content -->
+      <div class="right_col" role="main">
+         <!-- top tiles -->
+         <div class="row">
+            <div class="col-xs-12 col-sm-6">
+               <h1>Painel de Horas Ongoing</h1>
+            </div>
+            <div class="col-xs-12 col-sm-6" style="text-align: right;">
+               <h6>Última atualização: {{data}}hrs</h6>
+               <h6>Fonte: Sistema SARG</h6>
+            </div>
+         </div>
+         <!-- /top tiles -->
+         <div class="row tile_count">
+            <div class="col-sm-4 col-xs-6 tile_stats_count">
+               <span class="count_top">Total por Ongoing</span>
+               <div class="count"><i class="fa fa-clock-o"></i> <span id="hora" style="font-size: 40px;"></span></div>
+            </div>
+         </div>
+         <div class="row">
+            <div class="col-xs-12">
+               <!-- search form -->
+               <div class="x_panel">
+                  <div class="x_title" style="padding: 0;">
+                     <form action="" method="post" class="form-inline col-xs-9" >
+                        {% csrf_token %}
+                        <div style="padding-left: 0 !important;" class="form-group col-xs-4">
+                           <label class="">Filtro:</label>
+                           <select NAME="periodo" class="form-control">
+                              {% for per in periodos %}
+                              {% if vPeriodo == per.periodo %}
+                              <option value="{{ per.periodo }}" selected>{{ per.periodo }}</option>
+                              {% else %}
+                              <option value="{{ per.periodo }}">{{ per.periodo }}</option>
+                              {% endif %}
+                              {% endfor %}               
+                           </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Filtrar</button>
+                     </form>
+                     <!-- /search form -->
+                     <ul class="nav navbar-right panel_toolbox">
+                        <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                        </li>
+                        <li><a class="close-link"><i class="fa fa-close"></i></a>
+                        </li>
+                     </ul>
+                     <div class="clearfix" style="margin-bottom: 10px;"></div>
+                  </div>
+                  <div class="x_content">
+                     <!-- start project list -->
+                     <table id="tabelaOngoing" class="table table-striped projects" cellspacing="0" width="100%">
+                        <thead>
+                           <tr>
+                              <th>Cliente/Serviço</th>
+                              <th style="width:60px; text-align: center;">IC</th>
+                              <th style="width:90px; text-align: center;">Horas Normais</th>
+                              <th style="width:90px; text-align: center;">Horas 75%</th>
+                              <th style="width:90px; text-align: center;">Horas 100%</th>
+                              <th style="width:90px; text-align: center;">Total Ongoing</th>
+                              <th style="width:90px; text-align: center;">Período</th>
+                           </tr>
+                        </thead>
+                        <tbody>
+                           {% for i in horas_ongoing %}
+                           <tr>
+                              <td>
+                                 {{ i.des_item_contabil }} 									
+                              </td>
+                              <td style="text-align: center">
+                                 {{ i.item_contabil }} 									
+                              </td>
+                              <td style="text-align: center">
+                                 {{ i.hora_normal}} 									
+                              </td>
+                              <td style="text-align: center">
+                                 {{ i.hora_75_pc}} 									
+                              </td>
+                              <td style="text-align: center">
+                                 {{ i.hora_100_pc }}													
+                              </td>
+                              <td style="text-align: center">
+                                 {{ i.hora_total }} 														
+                              </td>
+                              <td style="text-align: center">
+                                 {{ i.periodo }} 														
+                              </td>
+                           </tr>
+                           {% endfor %}
+                        </tbody>
+                        <tfoot>
+                           <tr>
+                              <th colspan="2" style="text-align:left">Totais:</th>
+                              <th style="text-align: center"></th>
+                              <th style="text-align: center"></th>
+                              <th style="text-align: center"></th>
+                              <th style="text-align: center"></th>
+                              <th style="text-align: center"></th>
+                           </tr>
+                        </tfoot>
+                     </table>
+                     <!-- end project list -->
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+      <!-- /page content -->
+      <!-- footer content -->
+      {% include "sarg/include/footer.html" %}
+      <!-- /footer content -->
+      <!-- scripts content -->
+      {% include "sarg/include/scripts.html" %}
+      <!-- /scripts content -->
+   </body>
+</html>

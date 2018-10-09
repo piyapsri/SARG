@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!-- Meta, title, CSS, favicons, etc. -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Cadastro</title>
+
+    <!-- Bootstrap -->
+    <link href="/static/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="/static/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <!-- NProgress -->
+    <link href="/static/vendors/nprogress/nprogress.css" rel="stylesheet">
+    <!-- Animate.css -->
+    <link href="/static/vendors/animate.css/animate.min.css" rel="stylesheet">
+
+    <!-- Custom Theme Style -->
+    <link href="/static/build/css/custom.min.css" rel="stylesheet">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  </head>
+
+  
+   <body class="login">
+  
+     <div>
+      <a class="hiddenanchor" id="signup"></a>
+      <a class="hiddenanchor" id="signin"></a>
+	  
+      <div class="login_wrapper">
+	    <div class="animate form login_form">
+          <section class="login_content">
+
+			<form action="" method="post" enctype="multipart/form-data">	
+				<h1><i class="fa fa-cogs"></i> SARG</h1>
+				<h1>Sistema de Análise e Relatórios de Gestão</h1>
+				{% csrf_token %}
+				<div>
+					<input id="id_username" type="text" name="username" maxlength="30" placeholder="Usuário" class="form-control">
+				</div>
+				<div>
+				<input id="id_email" type="text" name="email" maxlength="75" placeholder="Endereço de e-mail" class="form-control">
+				</div>			
+				<div>					
+					<input type="password" name="password" id="id_password" placeholder="Senha" class="form-control">
+				</div>
+				<button href="/login_user/" type="submit" class="btn btn-default">Cadastrar</button>
+
+							<div id="form-success">
+							<br />
+								{% if success_message %}
+									<p style="color:green">{{ success_message }}</p>
+								{% endif %}
+							</div>
+							<div id="form-error">
+								{% if form.errors %}
+									<div class="alert alert-danger alert-dismissable fade in">
+                                        <p>A operação não pode ser concluída porque um ou mais erros ocorreram.<br/>Por favor prrear eencha novamente o formulário seguindo as instruções abaixo:</p>
+                                        {% for field in form %}
+											{% if field.errors %}
+												<p><span class="help-inline"style="color:red"><b>{{field.label}}:</b> {{field.errors|striptags}}</span></p>
+                                            {% endif %}
+                                        {% endfor %}
+									</div>
+                                {% endif %}
+							</div>
+				<div class="clearfix"></div>
+				<p class="change_link">Já possui conta?
+                  <a href="/login_user/" class="to_register"> Entrar </a>
+                </p>									
+
+				<div class="clearfix"></div>
+				<div class="separator">
+
+
+				
+                <div class="clearfix"></div>
+                <div>
+				  <p>2017 All Rights Reserved Cleartech. Privacy and Terms.</p>
+                </div>
+				</div>
+			</div>
+
+             </form>
+          </section>
+	</div>
+    </div>
+	 </div>
+  </body>
+</html>

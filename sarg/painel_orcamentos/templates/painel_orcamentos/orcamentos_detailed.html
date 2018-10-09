@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+   <head>
+      {% include "sarg/include/header.html" %}
+      <title>Painel de Despesas Detalhado</title>
+      <style>
+         #datatable-responsive tbody tr td{
+         vertical-align: middle !important;
+         }
+      </style>
+   </head>
+   <body class="nav-md">
+      <div class="container body">
+         <div class="main_container">
+            {% include "sarg/include/left.html" %}
+         </div>
+      </div>
+      <!-- top navigation -->
+      {% include "sarg/include/top_navegation.html" %}
+      <!-- /top navigation -->
+      <!-- page content -->
+      <div class="right_col" role="main">
+         <!-- top tiles -->
+         <div class="row">
+            <div class="col-xs-12 col-sm-6">
+               <h1>Despesas por IC - {{mes_corrente}}/{{ano_corrente}}</h1>
+            </div>
+            <div class="col-xs-12 col-sm-6" style="text-align: right;">
+               <h6>Situação atual: {{data}}hrs</h6>
+			   <h6>Fonte: Sistema SARG</h6>
+            </div>
+         </div>
+         <!-- /top tiles -->
+         <div class="row">
+            <div class="col-xs-12">
+               <div class="x_panel">
+                  <div class="x_title">
+                     <ul class="nav navbar-right panel_toolbox">
+                        <li class="dropdown">
+                           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><span style="font-size:20px"><i class="fa fa-search-plus"></i></span></a>
+                           <ul class="dropdown-menu dropdown-menu-right " role="menu" style="postion: relative;left: auto;">
+                              <li><a data-toggle="modal" data-target="#myModalBGraph">Histórico Anual Geral de Despesas</a></li>						
+                           </ul>
+                        </li>				  
+                     </ul>
+
+                     <div class="clearfix"></div>
+                  </div>
+                  <div class="x_content">			   
+                     <!-- Modal -->
+                     <div class="modal fade" id="myModalBGraph" role="dialog">
+                        <div class="modal-dialog">							
+                           <!-- Modal content-->
+                           <div class="modal-content">
+                              <div class="modal-body">
+                                 <div id="container10" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+                              </div>
+                              <div class="modal-footer">
+                                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                              </div>
+                           </div>
+                           <!-- Modal content-->							
+                        </div>
+                     </div>
+                     <!-- End Modal -->				   
+                     <!-- start project list -->
+                     <table id="datatable-buttons" class="table table-striped projects" cellspacing="0" width="100%">
+                        <thead>
+                           <tr>	
+            <!--			    <th>I.C</th>  -->
+                              <th>I.C | Descrição</th>				   
+                              <th style="text-align:center; vertical-align:center;">Valor</th>
+                              <th style="text-align:center; vertical-align:center;">Ação</th>						   
+                           </tr>
+                        </thead>
+                        <tbody>
+                     {% for i in ORC_REL_IC_MES %}
+                           <tr>
+                    <!--        <td>
+                        {{i.item_contabil}}
+                        </td> -->
+                        <td>
+                         <b>{{i.item_contabil}}</b> | {{i.descricao_item}}
+                        </td>
+                        <td style="text-align: center; vertical-align:middle;">
+                        {{i.valor|floatformat:2}}
+                        </td>
+                        <td style="text-align: center; vertical-align:middle;">
+                        <a href='orcamentos_detailed/orcamentos_detailed_ic/{{i.item_contabil}}' data-toggle="modal" data-target="#myModal{{ forloop.counter }}"><span style="font-size: 20px;"><i class="fa fa-search-plus" style="color: blue;"></i></span></a>
+                        <!-- Modal -->
+                        <div class="modal fade" id="myModal{{ forloop.counter }}" role="dialog">
+                           <div class="modal-dialog ">
+                           
+                           <!-- Modal content-->
+                           <div class="modal-content">
+
+                           </div>
+                           <!-- Modal content-->
+                           
+                           </div>
+                        </div>
+                        <!-- End Modal -->
+      
+                        &nbsp
+                        <a href="orcamentos_detailed/orcamentos_detailed_ic_ano/{{i.item_contabil}}" data-toggle="modal" data-target="#myModal2{{ forloop.counter }}"><span style="font-size: 20px;"><i class="fa fa-history" style="color: gray;"></i></span></a>  
+                        <!-- Modal -->
+                        <div class="modal fade" id="myModal2{{ forloop.counter }}" role="dialog">
+                           <div class="modal-dialog">
+                           
+                           <!-- Modal content-->
+                           <div class="modal-content">
+
+                           </div>
+                           <!-- Modal content-->
+                           
+                           </div>
+                        </div>
+                        <!-- End Modal --> 
+                        </td>							
+                           </tr>
+                     {% endfor %}
+                        </tbody>
+                     </table>
+                 
+                     <!-- end project list --> 
+              
+                 
+              
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+      </div>
+      </div>
+      <!-- /page content -->
+      <!-- footer content -->
+      {% include "sarg/include/footer.html" %}
+      <!-- /footer content -->
+      </div>
+      </div>
+      <!-- scripts content -->
+      {% include "sarg/include/scripts.html" %}
+<script>
+ Highcharts.chart('container10', {
+    chart: {
+        type: 'column'
+    },
+    title: {
+        text: 'Histórico Anual Geral de Despesas'
+    },
+    subtitle: {
+        text: 'Source: Protheus'
+    },
+    xAxis: {
+        type: 'category',
+        labels: {
+            rotation: -30,
+            style: {
+                fontSize: '11px',
+                fontFamily: 'Verdana, sans-serif'
+            }
+        }
+    },
+    yAxis: {
+        min: 0,
+        title: {
+            text: ''
+        }
+    },
+    legend: {
+        enabled: false
+    },
+    series: [{
+        name: 'Historico de Beneficios no ano',
+		color: '#1ABB9C',
+        data: [
+		{% for i in ORC_REL_IC_GERAL_ANO %}
+		['{{i.periodo}}', {{i.tot_val|stringformat:"f"}}],
+		{% endfor %}
+		],
+        dataLabels: {
+            enabled: true,
+            rotation: -360,
+            align: 'center',
+			color: 'black',
+            y: -5, // 10 pixels down from the top
+            style: {
+                fontSize: '11px',
+                fontFamily: 'Verdana, sans-serif'
+            }
+        }
+    }]
+});
+</script>	  
+      <!-- /scripts content -->
+   </body>
+</html>

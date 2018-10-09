@@ -1,0 +1,280 @@
+{% load humanize %}
+<!DOCTYPE html>
+<html lang="pt-br">
+   <head>
+      {% include "sarg/include/header.html" %}
+      <title>Demandas | SARG | Sistema de Análise e Relatórios de Gestão</title>
+   </head>
+   <body class="nav-md">
+      <div class="container body">
+         <div class="main_container">
+            {% include "sarg/include/left.html" %}
+         </div>
+      </div>
+      <!-- top navigation -->
+      {% include "sarg/include/top_navegation.html" %}
+      <!-- /top navigation -->
+      <!-- page content -->
+      <div class="right_col" role="main">
+         <div class="row">
+            <div class="col-xs-12 col-sm-6">
+               <h1>Painel de Demandas</h1>
+            </div>
+            <div class="col-xs-12 col-sm-6" style="text-align: right;">
+               <h6>Última atualização: {{data}}hrs</h6>
+               <h6>Fonte: Dynamics CRM</h6>
+            </div>
+         </div>
+         <!-- top tiles -->
+         <div class="row tile_count">
+            <div class="row">
+               <div class="col-xs-12">
+                  <div class="x_panel">
+                     <div class="x_content">
+                        <table class="table table-striped" style="min-width: 60px; height: 150px; margin: 0 auto">
+                           <thead>
+                              <tr>
+                                 <th scope="col"></th>
+                                 <th scope="col" style="text-align:center" ;>Orçadas</th>
+                                 <th scope="col" style="text-align:center" ;>Não Orçadas</th>
+                                 <th scope="col" style="text-align:center" ;>Total</th>
+                              </tr>
+                           </thead>
+                           <tbody style="text-align:center";>
+                              <tr>
+                                 <th scope="row">Externas</th>
+                                 <td>{{QUANTIDADE_DEMANDAS_EXTERNAS_ORCADAS}}</td>
+                                 <td>
+                                    <button type="button" data-toggle="modal" value="Demanda" class="openModalExternas">
+                                    {{QUANTIDADE_DEMANDAS_EXTERNAS_NAO_ORCADAS}}</button>
+                                 </td>
+                                 <td>{{TOTAL_DEMANDAS_EXTERNAS}}</td>
+                              </tr>
+                              <tr>
+                                 <th scope="row">Internas</th>
+                                 <td>{{QUANTIDADE_DEMANDAS_INTERNAS_ORCADAS}}</td>
+                                 <td>
+                                    <button type="button" data-toggle="" data-target="#" value="Severidade 9" class="openModalExternas">
+                                    {{QUANTIDADE_DEMANDAS_INTERNAS_NAO_ORCADAS}}</button>
+                                 </td>
+                                 <td>{{TOTAL_DEMANDAS_INTERNAS}}</td>
+                              </tr>
+                           </tbody>
+                           <tfoot>
+                              <tr>
+                                 <th></th>
+                                 <td></td>
+                                 <td></td>
+                                 <td style="text-align:center"><b>Total: {{TOTAL_DEMANDAS_EXTERNAS_E_INTERNAS}}</b></td>
+                              </tr>
+                           </tfoot>
+                        </table>
+                     </div>
+                  </div>
+                  <!-- /top tiles -->
+                  <div class="row">
+                     <div class="col-xs-12">
+                        <div class="x_panel">
+                           <div class="x_title">
+                              <ul class="nav navbar-right panel_toolbox">
+                                 <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                                 </li>
+                                 <li><a class="close-link"><i class="fa fa-close"></i></a>
+                                 </li>
+                              </ul>
+                              <div class="clearfix"></div>
+                           </div>
+                           <div class="x_content">
+                              <div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+                  <!-- Modal content-->
+                  <div class="modal fade" id="detalhe_demanda" role="dialog">
+                     <div class="modal-dialog modal-lg" style="width: 85%;">
+                        <div class="modal-content">
+                           <div class="modal-header">
+                              <button type="button" class="close" data-dismiss="modal">&times;</button>
+                              <h4 class="modal-title">Detalhamento <span id="tipoDemandaTitulo"></span></h4>
+                           </div>
+                           <div class="modal-body">
+                              <p>Some text in the modal.</p>
+                           </div>
+                           <div class="modal-footer">
+                              <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+                  <!-- FIM Modal content-->
+                  <!-- Modal Não Orçadas-->
+                  <div class="modal fade" id="abraModal" role="dialog">
+                     <div class="modal-dialog modal-lg" style="width: 85%;">
+                        <div class="modal-content">
+                           <div class="modal-header">
+                              <button type="button" class="close" data-dismiss="modal">&times;</button>
+                              <h4 class="modal-title">Detalhamento Não Orçadas</h4>
+                           </div>
+                           <div class="modal-body">
+                              <p>Some text in the modal.</p>
+                           </div>
+                           <div class="modal-footer">
+                              <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+                  <!-- FIM Modal Não Orçadas-->	
+               </div>
+            </div>
+         </div>
+         <!-- /page content -->
+         <!-- footer content -->
+         {% include "sarg/include/footer.html" %}
+         <!-- /footer content -->
+      </div>
+      <!-- scripts content -->
+      {% include "sarg/include/scripts.html" %}
+      <!-- scripts content -->
+      {% include "sarg/include/scripts_modais.html" %}
+      <!--/scripts content -->  
+
+      <script>		
+		$(document).ready(function() {
+			$('.openModalExternas').click(function(e) {
+			
+				var vSeveridade = $(this).val();
+				$('#abraModal .modal-body').load('demandas_naoorcadas.html?severidade='+encodeURI(vSeveridade)+'', function(){
+					$('#abraModal').modal({show:true}, function(){return false});
+				});
+			});
+		});
+					  
+         Highcharts.chart('container', {
+            chart: {
+               type: 'column'
+            },
+            title: {
+               text: 'Em Aberto por Serviço'
+            },
+			subtitle: {
+                 text: ''
+             },
+            xAxis: {
+               categories: [{% for VALUE in DEMANDAS_SERVICOS %}'{{VALUE.servico}}',{% endfor %}]
+            },
+            yAxis: [{
+               min: 0,
+               title: {
+                  text: ''
+               },
+               stackLabels: {
+                  enabled: true,
+                  style: {
+                     fontWeight: 'bold',
+                     fontSize: '11px',
+                     color: (Highcharts.theme && Highcharts.theme.textColor) || 'black'
+                  }
+               }
+            },{
+               title: {
+                  text: '',
+               },
+               opposite: true
+            }],
+            legend: {
+               /*
+               align: 'right',
+               x: -30,
+               verticalAlign: 'top',
+               y: 25,
+               floating: true,
+               */
+               align: 'center',
+               verticalAlign: 'top',
+               floating: false,
+               backgroundColor: (Highcharts.theme && Highcharts.theme.background2) || 'white',
+               borderColor: '#CCC',
+               borderWidth: 1,
+               shadow: false
+            },
+            tooltip: {
+               headerFormat: '<b>{point.x}</b><br/>',
+               pointFormat: '{series.name}: {point.y}<br/>Total: {point.stackTotal}'
+            },
+            plotOptions: {
+               column: {
+                  stacking: 'normal',
+                  dataLabels: {
+                     formatter:function() {
+                        if(this.y != 0) {
+                           return this.y;
+                        }
+                     },
+                     allowOverlap: false,
+                     enabled: true,
+                     color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'white'
+                  }
+               }
+            },	 
+            plotOptions: {
+               series: {
+                  cursor: 'pointer',
+                  point: {
+                     events: {
+                        click: function (e) {
+                           if (this.series.index == 2 || this.series.index == 3) { e.preventDefault(); return true; }						
+                           $('#tipoDemandaTitulo').html('de demandas ' + this.series.name.toLowerCase());
+                           $('#detalhe_demanda .modal-body').load('demandas_detalhamento.html?tipo='+this.series.name.toUpperCase()+'&servico='+encodeURI(this.category.toUpperCase()),function(){
+                              $('#detalhe_demanda').modal({show:true}, function(){return false});
+                           });
+                        }
+                     }
+                  }
+               },		 
+               column: {
+                  stacking: 'normal',
+                  dataLabels: {
+                     formatter:function() {
+                        if(this.y != 0) {
+                           return this.y;
+                        }
+                     },
+                     allowOverlap: false,
+                     enabled: true,
+                     color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'white'
+                  }
+               }
+            },			 
+            series: [{
+               name: 'Internas', 
+         	   color: '#73879C',
+               data: [{% for VALUE in DEMANDAS_SERVICOS %}{{VALUE.INTERNAS}},{% endfor %}],
+               stack: 0
+            },
+            {
+               name: 'Externas',
+         		color: '#1ABB9C',
+               data: [{% for VALUE in DEMANDAS_SERVICOS %}{{VALUE.EXTERNAS}},{% endfor %}],
+               stack: 0
+            },
+			{
+               name: 'Horas Previstas Internas',
+               color: '#b1bfcd',
+               yAxis: 1,
+               data: [{% for VALUE in DEMANDAS_SERVICOS %}{{VALUE.HORAS_INTERNAS|iriencode}},{% endfor %}],
+               stack: 1
+            },
+			{
+               name: 'Horas Previstas Externas',
+			   color: '#57dbc1',
+         	   yAxis: 1,
+               data: [{% for VALUE in DEMANDAS_SERVICOS %}{{VALUE.HORAS_EXTERNAS|iriencode}},{% endfor %}],
+               stack: 1
+            },]
+         });	 
+      </script>
+      <!-- /scripts content -->
+	</body>
+</html>

@@ -1,0 +1,71 @@
+
+
+
+									<div class="modal-header">
+									<button type="button" class="close" data-dismiss="modal">&times;</button>
+									<h4 class="modal-title">Histórico Anual de Despesa(s)</h4>
+									</div>
+									<div class="modal-body">
+
+											<div id="containerX" ></div> 	       
+									
+									</div>
+									<div class="modal-footer">
+									
+									<button type="button" onclick="javascript:window.location.reload()"class="btn btn-default" data-dismiss="modal">Close</button>
+									</div>
+
+ <script>
+
+ Highcharts.chart('containerX', {
+    chart: {
+        type: 'column'
+    },
+    title: {
+        text: ''
+    },
+    subtitle: {
+        text: 'Source: Protheus'
+    },
+    xAxis: {
+        type: 'category',
+        labels: {
+            rotation: -30,
+            style: {
+                fontSize: '11px',
+                fontFamily: 'Verdana, sans-serif'
+            }
+        }
+    },
+    yAxis: {
+        min: 0,
+        title: {
+            text: ''
+        }
+    },
+    legend: {
+        enabled: false
+    },
+    series: [{
+        name: 'Hisorico de Beneficios no ano',
+		color: '#1ABB9C',
+        data: [
+		{% for i in ORC_REL_IC_DET_ANO %}
+		['{{i.ano_mes}}', {{i.tot_val|stringformat:"f"}}],
+		{% endfor %}
+		],
+        dataLabels: {
+            enabled: true,
+            rotation: -360,
+            align: 'center',
+			color: 'black',
+            y: -5, // 10 pixels down from the top
+            style: {
+                fontSize: '11px',
+                fontFamily: 'Verdana, sans-serif'
+            }
+        }
+    }]
+});
+</script>
+

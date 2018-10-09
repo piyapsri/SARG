@@ -1,0 +1,118 @@
+	   <div class="col-md-3 left_col fixa">
+          <div class="left_col scroll-view">
+            <div class="navbar nav_title" style="border: 0; text-align: center;">
+              <a href="" class="site_title"><span class="fa fa-cogs"></span> <span>SARG</span></a>
+            </div>
+
+            <div class="clearfix"></div>
+
+            <!-- menu profile quick info -->
+            <div class="profile clearfix">
+              <div class="profile_pic">
+                <img src="/static/production/images/img.png" alt="..." class="img-circle profile_img"></img>
+              </div>
+              <div class="profile_info">
+                <span>Bem vindo!</span>
+                <h2>{{ user.first_name }} {{ user.last_name }}</h2>
+              </div>
+            </div>
+            <!-- /menu profile quick info -->
+
+            <br />
+
+            <!-- sidebar menu -->
+            <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
+              <div class="menu_section">
+                <ul class="nav side-menu">
+                  <li><a href="/"><i class="fa fa-home"></i> Home</a></li>
+                  <!--
+                  <li><a href="/painel_monitoracoes/monitoracoes"><i class="fa fa-bell"></i> Monitorações </a></li>				  
+                  <li><a><i class="fa fa-sitemap"></i> Serviços<span class="fa fa-chevron-down"></span> <span class="label label-success pull-right">Em breve</span></a>
+                    <ul class="nav child_menu">
+                        <li><a>Portabilidade<span class="fa fa-chevron-down"></span></a>
+                          <ul class="nav child_menu">
+                            <li class="sub_menu"><a href="#">Dashboard</a>
+                            </li>
+                            <li><a>SPG<span class="fa fa-chevron-down"></span></a>
+                              <ul class="nav child_menu">
+                                 <li class="sub_menu"><a href="#">Site SMC</a></li>
+                                 <li><a href="#">Site SPH</a></li>
+                              </ul>
+                            </li>
+                          </ul>
+                        </li>
+                    </ul>
+                  </li>
+                  -->
+                  <li><a><i class="fa fa-bar-chart-o"></i>Operações<span class="fa fa-chevron-down"></span></a>
+                     <ul class="nav child_menu">
+                        <li><a href="/painel_bugs/bugs">Painel de Bugs</a></li>
+                        <li><a href="/painel_demandas/demandas">Painel de Demandas</a></li>
+                        <li><a href="/painel_gmuds/gmuds">Painel de GMUDs</a></li>
+						<li><a href="/painel_ongoing/ongoing">Painel de Horas Ongoing</a></li>
+                        <li><a href="/painel_incidentes/incidentes">Painel de Incidentes</a></li>
+                        <li><a href="/painel_monitoracoes/monitoracoes">Painel de Monitorações</a></li>			
+                        <li><a href="/painel_rateio_horas/rateio">Painel de Rateio de Horas</a></li>			
+                     </ul>
+                  </li>
+                  <li><a><i class="fa fa-object-group"></i>Projetos<span class="fa fa-chevron-down"></span></a>
+                     <ul class="nav child_menu">
+                        <li><a href="/painel_projetos/projetos">Painel de Projetos</a></li>
+                     </ul>
+                  </li>
+                  <li><a><i class="fa fa-rocket"></i>Oportunidades<span class="fa fa-chevron-down"></span></a>
+                     <ul class="nav child_menu">
+                        <li><a href="/painel_oportunidades/oportunidades">Painel de Oportunidades</a></li>
+                     </ul>
+                  </li>
+<!--
+				      <li><a><i class="fa fa-desktop"></i> Paineis de Gestão TV <span class="fa fa-chevron-down"></span></a>
+                     <ul class="nav child_menu">
+                        <li><a href="/painel_bugs/bugs_tv" target="blank">Painel de Bugs</a></li>
+                        <li><a href="/painel_demandas/demandas_tv" target="blank">Painel de Demandas</a></li>
+                        <li><a href="/painel_gmuds/gmuds_tv" target="blank">Painel de GMUDs</a></li>
+                        <li><a href="/painel_incidentes/incidentes_tv" target="blank">Painel de Incidentes</a></li>
+                        <li><a href="/painel_oportunidades/oportunidades_tv" target="blank">Painel de Oportunidades</a></li>
+                        <li><a href="/painel_projetos/projetos_tv" target="blank">Painel de Projetos</a></li>						
+                     </ul>
+                  </li>
+-->                  
+				  <li><a><i class="fa fa-money"></i>Gestão<span class="fa fa-chevron-down"></span></a>
+				  <ul class="nav child_menu">
+					<li><a href="/painel_orcamentos/orcamentos">Consulta x Grupo Despesa</a></li>
+					<li><a href="/painel_orcamentos/orcamentos_detailed">Despesas por IC </a></li>
+					<li><a href="/receitas_extras_ongoing/receitas_extras_ongoing">Receitas Extras Ongoing</a></li>
+					<li><a href="/painel_horas_gns/horasgns">Resumo de Horas GNS</a></li>	
+				  </ul>
+				  </li>
+                </ul>
+              </div>
+            </div>
+            
+            <div class="clearfix"></div>
+            
+            <a class="navbar nav_title logo" href="http://www.cleartech.com.br" target="_blank"  style="border: 0; text-align: center; margin-bottom: 60px;">
+              <div class="logotipo-cleartech" style="background:url(/static/media/logo-mono.png)"></div>
+              <div class="logotipo-cleartech-aneis" style="background:url(/static/media/logo-mono-aneis.png)"></div>
+            </a>
+
+            
+            <!-- /sidebar menu -->
+
+            <!-- /menu footer buttons -->
+           <!-- <div class="sidebar-footer hidden-small">
+              <a data-toggle="tooltip" data-placement="top" title="Settings" href="/admin/" target="_blank">
+                <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
+              </a>
+            <!--  <a data-toggle="tooltip" data-placement="top" title="FullScreen">
+                <span class="glyphicon glyphicon-fullscreen" aria-hidden="true"></span> 
+              </a>
+              <a data-toggle="tooltip" data-placement="top" title="Lock">
+                <span class="glyphicon glyphicon-eye-close" aria-hidden="true"></span>
+              </a> -->
+              <!-- <a data-toggle="tooltip" data-placement="top" title="Logout" href="/logout_user/">
+                <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
+              </a>
+            </div>-->
+            <!-- /menu footer buttons -->
+		 

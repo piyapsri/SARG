@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+   <head>
+      {% include "sarg/include/header.html" %}
+      <title>Oportunidades | SARG | Sistema de Análise e Relatórios de Gestão</title>
+   </head>
+   <body class="nav-md">     
+      <div class="container body">
+         <div class="main_container">
+            {% include "sarg/include/left.html" %}
+         </div>
+      </div>
+      <!-- top navigation -->
+      {% include "sarg/include/top_navegation.html" %}
+      <!-- /top navigation -->
+      <!-- page content -->
+      <div class="right_col" role="main">
+         <!-- top tiles -->
+         <div class="row">
+            <div class="col-xs-12 col-sm-6">
+               <h1>Painel de Oportunidades</h1>
+            </div>
+            <div class="col-xs-12 col-sm-6" style="text-align: right;">
+               <h6>Situação atual: {{data}}hrs</h6>
+			   <h6>Fonte: Sistema SARG</h6>
+            </div>
+         </div>
+         <!-- /top tiles -->
+		 <div class="row tile_count">
+            <div class="col-sm-6 col-xs-6 tile_stats_count">
+              <span class="count_top">Total de Oportunidades</span>
+              <div class="count	"><i class="fa fa-rocket"></i> {{ amount_oportunidades }}</div>
+            </div>    
+			<div class="col-sm-2 col-xs-6 tile_stats_count" style="color: #1ABB9C;">
+              <span class="count_top">Proposta Enviada</span>
+              <div class="count	"><i class="fa fa-check-circle"></i> {{ amount_oportunidadesEnv }}</div>
+            </div>
+			<div class="col-sm-2 col-xs-6 tile_stats_count" style="color: #3498DB;">
+              <span class="count_top">Em Desenvolvimento</span>
+              <div class="count	"><i class="fa fa-arrow-circle-right"></i> {{ amount_oportunidadesDes }}</div>
+            </div>
+			<div class="col-sm-2 col-xs-6 tile_stats_count" style="color: gold;">
+              <span class="count_top">Prospec&ccedil;&atilde;o</span>
+              <div class="count	"><i class="fa fa-plus-circle"></i> {{ amount_oportunidadesPros }}</div>
+            </div>	
+         </div>
+         <div class="row">
+            <div class="col-xs-12">
+               <div class="x_panel">
+                  <div class="x_title">
+                     <ul class="nav navbar-right panel_toolbox">
+                        <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                        </li>
+                        <li><a class="close-link"><i class="fa fa-close"></i></a>
+                        </li>
+                     </ul>
+                     <div class="clearfix"></div>
+                  </div>			   
+                  <div class="x_content" style="width: 100%;">
+                     <!-- start project list -->
+                     <!--<table id="datatable-responsive" class="table table-striped responsive" style="max-width: 100% !important">-->
+                     <table id="datatable-buttons" class="display responsive nowrap" cellspacing="0" width="100%">
+                        <thead>
+                           <tr>
+                              <th nowrap>Cliente</th>
+                              <th nowrap>Oportunidade</th>
+                              <th nowrap>Responsável</th>
+                              <th nowrap style="text-align:left; vertical-align:middle;">Status</th>						   
+                              <th nowrap style="text-align:right; vertical-align:center;">Item Cont&aacute;bil</th>
+                              <th nowrap style="text-align:right; vertical-align:center;">Horas Realizadas</th>
+                              <th nowrap>Observação:</th>						   
+                           </tr>
+                        </thead>
+                        <tbody>
+                  {% for value in Oportunities %}
+                  {% if value.status != 'Finalizada' %}					 
+                           <tr>
+                              <td>
+                                 <div class="logotipo" style="background:url(/media/{{ value.cliente.logo }})"></div><label style="display:none">{{ value.cliente }}</label>
+                              </td>						
+                              <td>{{ value.oportunidade }}</td>
+                              <td>{{ value.responsavel }}</td>
+                              <td style="text-align:left; vertical-align:middle;">
+                                 {% if value.status == 'Prospecção de novos negócios' %}
+                                 <span style="font-size: 40px; color: gold"><i class="fa fa-plus-circle"></i><label style="display:none">{{ value.status }}</label></span>							   
+                                 {% elif value.status == 'Desenvolvimento de Proposta' %}
+                                 <span class="count blue" style="font-size: 40px;"><i class="fa fa-arrow-circle-right"></i><label style="display:none">{{ value.status }}</label></span>
+                                 {% elif value.status == 'Proposta Enviada' %}
+                                 <span class="count green" style="font-size: 40px;"><i class="fa fa-check-circle"></i><label style="display:none">{{ value.status }}</label></span>
+                                 {% endif %}
+                              </td>
+                              <td style="text-align: center;">{{ value.item_contabil.cod_item_contabil }}</td>
+                              <td style="text-align: center;">
+                              {% for horas in horas_realizadas %}
+                              {% if horas.item_contabil == value.item_contabil.cod_item_contabil and horas.id == value.id %}
+
+                                       {{horas.hora_total|default:"0"|floatformat:0}}                                    
+                                 {% endif %}
+                              {% endfor %}
+                              </td>                                 
+                              <td>{{ value.observacao }}</td>	
+                        
+                           </tr>
+                  {% endif %}
+                  {% endfor %}
+                        </tbody>
+                     </table>
+                     <!-- end project list -->
+                 
+               <!--    
+                     <div class="row tile_count" style="font-size: 14px;" align="center"> 
+                        <div class="col-xs-4 tile_stats_count">
+                           <span class="count" style="font-size:14px">
+                           <i class="fa fa-check-circle" style="color: #1ABB9C;"></i>
+                           </span>				
+                           <span style="font-size: 14px;"> 
+                            Proposta Enviada
+                           </span>
+                        </div>
+                        <div class="col-xs-4 tile_stats_count">
+                           <span class="count" style="font-size:14px">
+                           <i class="fa fa-arrow-circle-right" style="color: #3498DB;"></i>
+                           </span>
+                           <span style="font-size: 14px;"> 
+                           Em Desenvolvimento</span>
+                           </span>
+                        </div>
+                        <div class="col-xs-4 tile_stats_count">
+                           <span class="count" style="font-size:14px">
+                           <i class="fa fa-plus-circle" style="color: gold;"></i>
+                           </span>
+                           <span style="font-size: 14px;"> 
+                           Prospec&ccedil;&atilde;o
+                           </span>
+                        </div>
+                     </div>
+            -->
+            
+               </div>
+            </div>
+
+            
+         </div>				  
+
+         </div>
+      </div>
+      </div>
+      </div>
+      <!-- /page content -->
+      <!-- footer content -->
+      {% include "sarg/include/footer.html" %}
+      <!-- /footer content -->
+      </div>
+      </div>
+      <!-- scripts content -->
+      {% include "sarg/include/scripts.html" %}
+      <!-- /scripts content -->
+      
+     
+      
+   </body>
+</html>

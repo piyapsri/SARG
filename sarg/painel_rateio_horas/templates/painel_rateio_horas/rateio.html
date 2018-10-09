@@ -1,0 +1,143 @@
+{% load replaces %}
+<!DOCTYPE html>
+<html lang="pt-br">
+   <head>
+      {% include "sarg/include/header.html" %}
+      <title>Controle E-Ponto | SARG | Sistema de Análise e Relatórios de Gestão</title>
+      <style>
+         #datatable-responsive tbody tr td{
+         vertical-align: middle !important;
+         }
+      </style>
+   </head>
+   <body class="nav-md">
+      <div class="container body">
+         <div class="main_container">
+            {% include "sarg/include/left.html" %}
+         </div>
+      </div>
+      <!-- top navigation -->
+      {% include "sarg/include/top_navegation.html" %} 
+      <!-- /top navigation -->
+      <!-- page content -->
+      <div class="right_col" role="main">
+         <!-- top tiles -->
+         <div class="row">
+            <div class="col-xs-12 col-sm-6">
+               <h1>Painel de Rateio Horas</h1>
+            </div>
+            <div class="col-xs-12 col-sm-6" style="text-align: right;">
+               <h6>Última atualização: {{data}}hrs</h6>
+               <h6>Fonte: e-Ponto</h6>
+            </div>
+         </div>
+         <!-- /top tiles -->
+         <div class="row tile_count">
+            <div class="col-sm-4 col-xs-4 tile_stats_count" style="color:#1ABB9C">
+               <span class="count_top">Total rateado</span>
+               <div class="count"><i class="fa fa-users"></i> {{ amount_success }}</div>
+            </div>
+            <div class="col-sm-4 col-xs-4 tile_stats_count" style="color:gold">
+               <span class="count_top" >Total uma semana pendente</span>
+               <div class="count"><i class="fa fa-users"></i> <font color="gold">{{amount_warning}}</font></div>
+            </div>
+            <div class="col-sm-4 col-xs-4 tile_stats_count" style="color:red">
+               <span class="count_top">Total mais de uma semana atrasado</span>
+               <div class="count"><i class="fa fa-users"></i> {{ amount_danger }}</div>
+            </div>
+         </div>
+         <div class="col-md-13 col-sm-13 col-xs-13">
+            <div class="x_panel">
+               <div class="x_title">
+                  <ul class="nav navbar-right panel_toolbox">
+                     <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                     </li>
+                     <li><a class="close-link"><i class="fa fa-close"></i></a>
+                     </li>
+                  </ul>
+                  <div class="clearfix"></div>
+               </div>
+               <div class="x_content">
+                  <!-- start project list -->
+                  <table id="tabelaRateio" class="table table-striped projects" cellspacing="0" width="100%">
+                     <thead>
+                        <tr>
+                           <th>Nome</th>
+                           {% for i in loop_times %}
+                           {% if i == ultima_semana_periodo %}
+                           <th style="text-align:center; vertical-align:center;">Semana Atual</th>
+                           {% else %}
+                           <th style="text-align:center; vertical-align:center;">Semana {{ i }}</th>
+                           {% endif %}
+                           {% endfor %}
+                           <th style="text-align:center; vertical-align:center;">Status</th>
+                        </tr>
+                     </thead>
+                     <tbody>
+                        {% for value in rateioHoras %}
+                        <tr>
+                           <td> {{ value.nome }} </td>
+                           {% for i in loop_times %}
+                           {% if i == 1 %}
+                           <td style="text-align:center; vertical-align:middle;"> {{ value.semana_1|na:"0:00"|iconSucess:"OK"|safe }} </td>
+                           {% elif i == 2 %}
+                           <td style="text-align:center; vertical-align:middle;"> {{ value.semana_2|na:"0:00"|iconSucess:"OK"|safe }} </td>
+                           {% elif i == 3 %}
+                           <td style="text-align:center; vertical-align:middle;"> {{ value.semana_3|na:"0:00"|iconSucess:"OK"|safe }} </td>
+                           {% elif i == 4 %}
+                           <td style="text-align:center; vertical-align:middle;"> {{ value.semana_4|na:"0:00"|iconSucess:"OK"|safe }} </td>
+                           {% elif i == 5 %}
+                           <td style="text-align:center; vertical-align:middle;"> {{ value.semana_5|na:"0:00"|iconSucess:"OK"|safe }} </td>
+                           {% endif %}
+                           {% endfor %}
+                           <td style="text-align:center; vertical-align:middle;"> 
+                              {% if value.estatus == 'RATEADO' %}
+                              <span class="label label-success">{{ value.estatus }}</span>
+                              {% elif value.estatus == 'PENDENTE' %}
+                              <span class="label label-warning">{{ value.estatus }}</span>	
+                              {% elif value.estatus == 'ATRASADO' %}
+                              <span class="label label-danger">{{ value.estatus }}</span>	
+                              {% endif %} 
+                           </td>
+                        </tr>
+                        {% endfor %}
+                     </tbody>
+                  </table>
+                  <!-- end project list -->
+                  <div class="row tile_count" style="font-size: 14px;" align="center">
+                     <div class="col-xs-4 tile_stats_count">
+                        <span class="count" style="font-size:14px">
+                        <i class="fa fa-check-circle" style="color: #1ABB9C;"></i>
+                        </span>				
+                        <span style="font-size: 14px;"> 
+                        OK - Para Semana Reteada 
+                        </span>
+                     </div>
+                     <div class="col-xs-3 tile_stats_count">
+                        <span class="count" style="font-size:14px">                           
+                        </span>
+                        <span style="font-size: 14px; style=color: gold;"> 						   
+                        N/A - Sem Registro de Horas</span>
+                        </span>
+                     </div>
+                     <div class="col-xs-3 tile_stats_count">
+                        <span class="count" style="font-size:14px">                           
+                        </span>
+                        <span style="font-size: 14px; style=color: gold;"> 						   
+                        Dados - Horas Pendentes de Rateio</span>
+                        </span>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+      <!-- /page content -->
+      <!-- footer content -->
+      {% include "sarg/include/footer.html" %}
+      <!-- /footer content -->
+      <!-- scripts content -->
+      {% include "sarg/include/scripts.html" %}
+      <!-- /scripts content -->
+   </body>
+</html>

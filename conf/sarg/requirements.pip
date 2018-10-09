@@ -1,0 +1,7 @@
+django==2.1.0
+gunicorn==19.9.0
+mysqlclient==1.3.13
+# PEDENTE MIGRAR INFORMACOES PAINEL_ORCAMENTOS PORCENTAGEM
+cx_Oracle
+#
+Pillow==5.2.0

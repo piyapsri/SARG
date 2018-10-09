@@ -1,0 +1,64 @@
+      
+      <!-- top navigation -->
+
+      <!-- /top navigation -->
+      <!-- page content -->
+      <div class="row" role="main">
+         <!-- top tiles -->
+  
+         <!-- /top tiles -->
+         <div class="col-xs-12">
+		 
+            <div class="x_panel">	
+               <div class="x_content">
+                  <!-- start project list -->
+                  <div class="row">
+                     <div class="col-xs-12">
+                        <table id="detalhamento_demandas" class="table responsive table-striped projects">
+                           <thead>
+                              <tr>
+                                 <th style="width: 16%">ID Demanda</th>
+                                 <th>Título</th>
+                                 <th>Situação</th>
+                                 <th>Responsável</th>
+                                 <th>Horas Previstas</th>		                                
+                              </tr>
+                           </thead>
+                           <tbody>
+                           {% for i in detalhe_demanda %}
+                              <tr>
+                                 <td>
+                                    {{ i.numero_ocorrencia }} 									
+                                 </td>
+                                 <td>
+                                    {{ i.titulo }} 									
+                                 </td>
+                                 <td>
+                                    {{ i.situacao}} 									
+                                 </td>
+                                 <td>
+                                    {{ i.responsavel}} 									
+                                 </td> 
+								 <td style="text-align:left; vertical-align:middle;">
+									<span class="label label-default">{{i.horas_previstas|default:"N/A"}}</span>			
+								 </td>                                         		                         						   
+                              </tr>
+                           {% endfor %}
+                           </tbody>
+                        </table>
+                     </div>
+                  </div>
+                  <!-- end project list -->
+               </div>
+            </div>
+         </div>
+      </div>
+	   <!-- scripts content -->
+      {% include "sarg/include/scripts_modais.html" %}
+      <!--/scripts content -->
+     <script>
+     $(document).ready(function(){
+      $('#detalhamento_demandas').DataTable();
+      $('input, select').css({'padding': '2px'});
+     });
+     </script>

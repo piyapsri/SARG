@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!-- Meta, title, CSS, favicons, etc. -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>SARG</title>
+
+    <!-- Bootstrap -->
+    <link href="/static/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="/static/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <!-- NProgress -->
+    <link href="/static/vendors/nprogress/nprogress.css" rel="stylesheet">
+    <!-- Animate.css -->
+    <link href="/static/vendors/animate.css/animate.min.css" rel="stylesheet">
+
+    <!-- Custom Theme Style -->
+    <link href="/static/build/css/custom.min.css" rel="stylesheet">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	
+  </head>
+  <style>
+  body {
+   background-image: url("/static/src/img/favicon.png");
+   background-color: #cccccc;
+}
+
+      .logotipo-cleartech{
+         display: block;
+         margin: 0 auto;
+         width: 160px !important;
+         height: 80px !important;
+         background-size: contain !important;
+         background-position: center center !important;         
+         background-repeat: no-repeat !important;
+      }
+  </style>
+
+  
+  <body class="login">
+  
+     <div>
+      <a class="hiddenanchor" id="signup"></a>
+      <a class="hiddenanchor" id="signin"></a>
+	  
+      <div class="login_wrapper">
+        <div class="animate form login_form">
+          <section class="login_content" style="text-align: center;">
+            
+            <a href="http://www.cleartech.com.br" target="_blank" style="margin: 0 auto;">
+              <div class="logotipo-cleartech" style="background:url(/static/media/logo-color.png)"></div>
+            </a>
+
+            <div class="clearfix"></div>
+            
+            <form action="/login_user/" method="post" enctype="multipart/form-data"> {% csrf_token %}
+               <h1><i class="fa fa-cogs"></i> SARG</h1>
+               <h1 style="line-height: 100%;">Sistema de Análise e Relatórios de Gestão</h1>
+						<div>
+							<input id="id_username"name="username" type="text" class="form-control" placeholder="Usuário" />
+						</div>
+						<div>
+							<input id="id_password" name="password" type="password" class="form-control" placeholder="Senha" />
+						</div>
+						<div>
+												
+							{% if error_message %}
+							<div class="alert alert-warning alert-dismissable fade in">
+								<strong>Warning!</strong> {{ error_message }}
+							</div>
+							{% endif %}
+	
+							{% if success_message %}
+							<div class="alert alert-success alert-dismissable fade in">
+								<strong>Success!</strong> {{ success_message }}</p>
+							</div>
+							{% endif %}
+							
+							<button type="submit" class="btn btn-default">Entrar</button>
+
+							</div>
+				 </br>
+<!--				<p class="change_link">Nao possui conta?
+                  <a href="/register/" class="to_register"> Criar Conta </a>
+                </p>
+				<p class="change_link">Esqueceu a senha?
+                  <a href="/register/" class="to_register"> Alterar Senha </a>
+                </p> -->				
+                <div class="clearfix"></div>
+		<div class="separator">
+                <div>
+				  
+				
+				  <p>©2017 All Rights Reserved Cleartech. Privacy and Terms.</p>
+                </div>
+              </div>
+         </div>
+        </div>
+             </form>
+          </section>
+        </div>
+  </body>
+</html>

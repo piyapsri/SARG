@@ -1,0 +1,60 @@
+<!-- top navigation -->
+<!-- /top navigation -->
+<!-- page content -->
+<div class="row" role="main">
+   <!-- top tiles -->
+   <!-- /top tiles -->
+   <div class="col-xs-12">
+      <div class="x_panel">
+         <div class="x_content">
+            <!-- start project list -->
+            <div class="row">
+               <div class="col-xs-12">
+                  <table id="detalhamento_falhas" class="table responsive table-striped projects">
+                     <thead>
+                        <tr>
+                           <th style="width: 16%">Numero Ocorrencia</th>
+                           <th>Título</th>
+                           <th>Data Abertura</th>
+                           <th>Tipo Serviço</th>
+						   <th>Situação</th>
+                        </tr>
+                     </thead>
+                     <tbody>
+                        {% for e in detalhe_ocorrencias %}
+                        <tr>
+                           <td>
+                              {{ e.numero_ocorrencia }} 									
+                           </td>
+                           <td>
+                              {{ e.titulo }} 									
+                           </td>
+                           <td>
+                              {{ e.data_criacao}} 									
+                           </td>
+                           <td>
+                              {{ e.tipo_servico}} 									
+                           </td>
+						   <td>
+                              {{ e.situacao}} 									
+                           </td>
+                        </tr>
+                        {% endfor %}
+                     </tbody>
+                  </table>
+               </div>
+            </div>
+            <!-- end project list -->
+         </div>
+      </div>
+   </div>
+</div>
+<!-- scripts content -->
+{% include "sarg/include/scripts_modais.html" %}
+<!--/scripts content -->  
+<script>
+     $(document).ready(function(){
+  //   $('#detalhamento_ocorrencias').DataTable();
+      $('input, select').css({'padding': '2px'});
+     });
+</script>

@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+   <head>
+      {% include "marsgns/include/header.html" %}
+      <title>Consulta x Grupo Despesa</title>
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>	  
+      <style>
+         #datatable-responsive tbody tr td{
+         vertical-align: middle !important;
+         }
+      </style>
+   </head>
+   <body class="nav-md">
+      <div class="container body">
+         <div class="main_container">
+            {% include "marsgns/include/left.html" %}
+         </div>
+      </div>
+      <!-- top navigation -->
+      {% include "marsgns/include/top_navegation.html" %}
+      <!-- /top navigation -->
+      <!-- page content -->
+      <div class="right_col" role="main">
+         <!-- top tiles -->
+  <!--       {% include "marsgns/include/top_titles.html" %} -->
+         <!-- /top tiles -->
+		<div class="col-md-13 col-sm-13 col-xs-13">
+			<div class="x_panel">
+				<div class="x_title">
+					<h2>Painel de Orçamentos<small>Última atualização: {{data}}</small></h2>
+					<div class="clearfix"></div>
+				</div>
+               <div class="x_content">
+			   
+
+  		   
+			{% for value in Orcamentos_Previstos %}		   
+			<div class="col-md-6 col-sm-4 col-xs-12">
+				<div class="x_panel tile fixed_height_220">
+					<div class="x_title">
+					<ul class="nav navbar-right panel_toolbox">
+						<li class="dropdown">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-search-plus"></i></a>
+						<ul class="dropdown-menu" role="menu">
+							<li><a data-toggle="modal" data-target="#myModal{{value.despesa}}1">Despesas Realizadas no Mês com {{value.despesa}}</a></li>
+							<li><a data-toggle="modal" data-target="#myModal{{value.despesa}}2">Histórico de {{value.despesa}} no ano</a></li>
+							<li><a data-toggle="modal" data-target="#myModal{{value.despesa}}3">Previsto x Realizado Acumulado com {{value.despesa}} no Ano </a></li>
+						</ul>
+						</li>				  
+						<li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a> </li>
+						<li><a class="close-link"><i class="fa fa-close"></i></a></li>
+					</ul>				
+					{% if value.despesa == 'Viagens' %}
+					<div class="icon"><h1> <i class="fa fa-plane"> {{value.despesa}}</h1></i></div>									
+					{% elif value.despesa == 'Capacitações' %}
+					<div class="icon"><h1> <i class="fa fa-graduation-cap"> {{value.despesa}}</h1></i></div>										
+					{% elif value.despesa == 'Fornecedores' %}
+					<div class="icon"><h1> <i class="fa fa-group"> {{value.despesa}}</h1></i></div>																			
+					{% elif value.despesa == 'Eventos' %}
+					<div class="icon"><h1> <i class="fa fa-comments-o"> {{value.despesa}}</h1></i></div>									
+					{% elif value.despesa == 'Consumo' %}
+					<div class="icon"><h1> <i class="fa fa-credit-card"> {{value.despesa}}</h1></i></div>
+					{% elif value.despesa == 'Benefícios' %}
+					<div class="icon"><h1> <i class="fa fa-gavel"> {{value.despesa}}</h1></i></div>										
+					{% elif value.despesa == 'Sem Classificação' %}
+					<div class="icon"><h1> <i class="fa fa-question"> {{value.despesa}}</h1></i></div>										
+					{% endif %}	
+					<div class="clearfix"></div>
+					</div>
+					<div class="x_content">
+					
+					
+  <!-- Modal -->
+  <div class="modal fade" id="myModal{{value.despesa}}1" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Despesas Realizadas no Mês com {{value.despesa}}</h4>
+        </div>
+        <div class="modal-body">
+
+<div id="container" style="min-width: 310px; height: 400px; max-width: 600px; margin: 0 auto"></div>
+		
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+  <!-- End Modal -->
+  <!-- Modal -->
+  <div class="modal fade" id="myModal{{value.despesa}}2" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Despesas Realizadas no Mês com {{value.despesa}}</h4>
+        </div>
+        <div class="modal-body">
+
+		
+<div id="container2" style="min-width: 310px; height: 400px; margin: 0 auto"></div>		
+		
+		
+		
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+  <!-- End Modal -->
+  <!-- Modal -->
+  <div class="modal fade" id="myModal{{value.despesa}}3" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Despesas Realizadas no Mês com {{value.despesa}}</h4>
+        </div>
+        <div class="modal-body">
+
+		
+<div id="container3" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+		
+		
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+  <!-- End Modal -->  
+					
+					
+						<div class="row top_tiles">				
+							<div class="animated flipInY col-lg-6 col-md-3 col-sm-6 col-xs-12">
+								<div class="tile-stats">
+									<div class="count">R$ {{value.valor|floatformat:0}}</div>
+										<h3>Previsto no Mês</h3>
+										<p>Total Previsto em {{mes_corrente}}/{{ano_corrente}}</p>
+										{% if value.despesa == 'Benefícios' %}
+											{% if Total_Orcamentos_Mes_Beneficios == '' %}
+												<div class="count">R$ 0</div>	
+											{% else %}
+												<div class="count">R$ {{Total_Orcamentos_Mes_Beneficios|floatformat:0}}</div>	
+											{% endif %}					  								
+										{% elif value.despesa == 'Capacitações' %}
+											{% if Total_Orcamentos_Mes_Capacitacoes == '' %}
+												<div class="count">R$ 0</div>	
+											{% else %}
+												<div class="count">R$ {{Total_Orcamentos_Mes_Capacitacoes|floatformat:0}}</div>	
+											{% endif %}				  										
+										{% elif value.despesa == 'Consumo' %}
+											{% if Total_Orcamentos_Mes_Consumos == '' %}
+												<div class="count">R$ 0</div>	
+											{% else %}
+												<div class="count">R$ {{Total_Orcamentos_Mes_Consumos|floatformat:0}}</div>	
+											{% endif %}
+										{% elif value.despesa == 'Eventos' %}
+												<div class="count">R$ 0</div>									
+										{% elif value.despesa == 'Fornecedores' %}
+												<div class="count">R$ 0</div>
+										{% elif value.despesa == 'Viagens' %}
+											{% if Total_Orcamentos_Mes_Viagens == '' %}
+												<div class="count">R$ 0</div>	
+											{% else %}
+												<div class="count">R$ {{Total_Orcamentos_Mes_Viagens|floatformat:0}}</div>	
+											{% endif %}					  									
+										{% elif value.despesa == 'Sem Classificação' %}
+												<div class="count">R$ 0</div>										
+										{% else %}
+												<div class="count">R$ 0</div>	
+										{% endif %}	
+										<h3>Realizado no Mês</h3>
+										<p>Total Relizados em {{mes_corrente}}/{{ano_corrente}}</p>
+								</div>
+							</div>
+							<div class="animated flipInY col-lg-6 col-md-3 col-sm-6 col-xs-12">
+								<div class="tile-stats">
+									<div class="count">R$ {{value.total_ano|floatformat:0}}</div>
+										<h3>Previsto no Ano</h3>
+										<p>Total Previstos em {{ano_corrente}}</p>
+										{% if value.despesa == 'Benefícios' %}
+											{% if Total_Orcamentos_Ano_Beneficios == '' %}
+												<div class="count">R$ 0</div>	
+											{% else %}
+												<div class="count">R$ {{Total_Orcamentos_Ano_Beneficios|floatformat:0}}</div>	
+											{% endif %}					  								
+										{% elif value.despesa == 'Capacitações' %}
+											{% if Total_Orcamentos_Ano_Capacitacoes == '' %}
+												<div class="count">R$ 0</div>	
+											{% else %}
+												<div class="count">R$ {{Total_Orcamentos_Ano_Capacitacoes|floatformat:0}}</div>	
+											{% endif %}				  										
+										{% elif value.despesa == 'Consumo' %}
+											{% if Total_Orcamentos_Ano_Consumos == '' %}
+												<div class="count">R$ 0</div>	
+											{% else %}
+												<div class="count">R$ {{Total_Orcamentos_Ano_Consumos|floatformat:0}}</div>	
+											{% endif %}
+										{% elif value.despesa == 'Eventos' %}
+												<div class="count">R$ 0</div>									
+										{% elif value.despesa == 'Fornecedores' %}
+												<div class="count">R$ 0</div>
+										{% elif value.despesa == 'Viagens' %}
+											{% if Total_Orcamentos_Ano_Viagens == '' %}
+												<div class="count">R$ 0</div>	
+											{% else %}
+												<div class="count">R$ {{Total_Orcamentos_Ano_Viagens|floatformat:0}}</div>	
+											{% endif %}					  									
+										{% elif value.despesa == 'Sem Classificação' %}
+												<div class="count">R$ 0</div>										
+										{% else %}
+												<div class="count">R$ 0</div>	
+										{% endif %}	
+										<h3>Realizado no Ano</h3>
+										<p>Total Realizados em {{ano_corrente}}</p>
+								</div>
+							</div>
+						</div>					
+					</div>	
+				</div>		
+			</div>
+			{% endfor %}	
+		</div>
+</div>		
+			
+
+                  <!-- end project list -->
+				  
+				  
+
+          
+         </div>
+      </div>
+      </div>
+      </div>
+      <!-- /page content -->
+      <!-- footer content -->
+      {% include "marsgns/include/footer.html" %}
+      <!-- /footer content -->
+      </div>
+      </div>
+      <!-- scripts content -->
+      {% include "marsgns/include/scripts.html" %}
+      <script>
+// Build the chart
+Highcharts.chart('container', {
+    chart: {
+        plotBackgroundColor: null,
+        plotBorderWidth: null,
+        plotShadow: false,
+        type: 'pie'
+    },
+    title: {
+        text: 'Browser market shares in January, 2018'
+    },
+    tooltip: {
+        pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+    },
+    plotOptions: {
+        pie: {
+            allowPointSelect: true,
+            cursor: 'pointer',
+            dataLabels: {
+                enabled: false
+            },
+            showInLegend: true
+        }
+    },
+    series: [{
+        name: 'Brands',
+        colorByPoint: true,
+        data: [{
+            name: 'Chrome',
+            y: 61.41,
+            sliced: true,
+            selected: true
+        }, {
+            name: 'Internet Explorer',
+            y: 11.84
+        }, {
+            name: 'Firefox',
+            y: 10.85
+        }, {
+            name: 'Edge',
+            y: 4.67
+        }, {
+            name: 'Safari',
+            y: 4.18
+        }, {
+            name: 'Other',
+            y: 7.05
+        }]
+    }]
+});
+
+
+Highcharts.chart('container2', {
+    chart: {
+        type: 'column',
+        options3d: {
+            enabled: true,
+            alpha: 10,
+            beta: 25,
+            depth: 70
+        }
+    },
+    title: {
+        text: '3D chart with null values'
+    },
+    subtitle: {
+        text: 'Notice the difference between a 0 value and a null point'
+    },
+    plotOptions: {
+        column: {
+            depth: 25
+        }
+    },
+    xAxis: {
+        categories: Highcharts.getOptions().lang.shortMonths,
+        labels: {
+            skew3d: true,
+            style: {
+                fontSize: '16px'
+            }
+        }
+    },
+    yAxis: {
+        title: {
+            text: null
+        }
+    },
+    series: [{
+        name: 'Sales',
+        data: [2, 3, null, 4, 0, 5, 1, 4, 6, 3]
+    }]
+});
+
+
+
+Highcharts.chart('container3', {
+    chart: {
+        type: 'line'
+    },
+    title: {
+        text: 'Monthly Average Temperature'
+    },
+    subtitle: {
+        text: 'Source: WorldClimate.com'
+    },
+    xAxis: {
+        categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+    },
+    yAxis: {
+        title: {
+            text: 'Temperature (°C)'
+        }
+    },
+    plotOptions: {
+        line: {
+            dataLabels: {
+                enabled: true
+            },
+            enableMouseTracking: false
+        }
+    },
+    series: [{
+        name: 'Tokyo',
+        data: [7.0, 6.9, 9.5, 14.5, 18.4, 21.5, 25.2, 26.5, 23.3, 18.3, 13.9, 9.6]
+    }, {
+        name: 'London',
+        data: [3.9, 4.2, 5.7, 8.5, 11.9, 15.2, 17.0, 16.6, 14.2, 10.3, 6.6, 4.8]
+    }]
+});
+      </script>	  
+      <!-- /scripts content -->
+   </body>
+</html>

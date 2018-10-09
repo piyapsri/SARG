@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+   <head>
+      {% include "sarg/include/header.html" %}
+      <title>GMUDs</title>
+   </head>
+   <body class="nav-md" style="background-color: white">
+      <div class="x_panel">
+      <div class="x_title" style="border-bottom-color:black;">
+		 <p style="font-size: 60px; color: black;" >PAINEL DE GMUD's<span style="font-size: 40px; color: black;"> &Uacuteltima atualiza&ccedil;&atilde;o: {{data}}</span></p>			
+         <div class="clearfix"></div>
+      </div>
+	  
+      <div class="row">	  
+         <div class="col-xs-12">
+            <div class="x_panel">
+               <div class="x_content">
+                  <!-- start project list -->
+                  <table class="table table-striped projects" cellspacing="0" width="100%" style="font-size: 30pt; color: black;">
+                     <thead>
+                        <tr>
+                           <th style="width: 15%; text-align:center; padding-left: 30px; border-color: black;font-color: black;">CLIENTE</th>
+                           <th style="text-align:left; padding-left: 30px; border-color: black;font-color: black;">DATA</th>
+                           <th style="text-align:left; padding-left: 30px; border-color: black;font-color: black;">SERVIÇO</th>
+						                              <th style="text-align:left; padding-left: 30px; border-color: black;font-color: black;">RESPONSÁVEL</th>
+                           <th  style="text-align:left; padding-left: 30px; border-color: black; font-color: black;">T&Iacute;TULO</th>
+                        </tr>
+                     </thead>
+                     <tbody>
+{% for value in Gmuds %}
+{% if value.status == 'Ativa' %}
+					     <tr>
+                           <td style="width:100px; height:100px; text-align:center; vertical-align:middle; color: black; border-color: black;">
+							  <div class="logotipotv" style="background:url(/media/{{ value.cliente.logo }})"></div><label style="display:none">{{ value.cliente.cliente }}</label>
+						   </td>
+                           <td style="text-align:left; vertical-align:middle; padding-left: 30px; border-color: black;">
+                              {{ value.data|date:'d/m/y'}}  									
+                           </td >
+                           <td style="text-align:left; vertical-align:middle; padding-left: 30px; border-color: black;">
+                              {{ value.servico}}  									
+                           </td >
+                           <td style="text-align:left; vertical-align:middle; padding-left: 30px; border-color: black;">
+                              {{ value.responsavel}}  									
+                           </td >						   
+                           <td style="text-align:left; vertical-align:middle; padding-left: 30px; border-color: black; ">{{ value.titulo }}</td>
+                        </tr>
+{% endif %}
+{% endfor %}							
+                     </tbody>
+                  </table>
+				  
+                  <!-- end project list -->					 
+               </div>
+            </div>
+		</div>
+		</div>	 
+         	 
+	  
+      <!-- /page content -->
+      <!-- scripts content -->
+      {% include "sarg/include/scripts.html" %}
+      <!-- /scripts content -->
+   </body>
+</html>

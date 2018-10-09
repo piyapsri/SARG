@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      {% include "sarg/include//header.html" %}
+      <title>SARG | Sistema de Análise e Relatórios de Gestão</title>
+<style>
+@import 'https://code.highcharts.com/css/highcharts.css';
+
+#container {
+	height: 400px;
+	max-width: 800px;
+	min-width: 320px;
+	margin: 0 auto;
+}
+.highcharts-pie-series .highcharts-point {
+	stroke: #EDE;
+	stroke-width: 2px;
+}
+.highcharts-pie-series .highcharts-data-label-connector {
+	stroke: silver;
+	stroke-dasharray: 2, 2;
+	stroke-width: 2px;
+}	
+
+.tile-stats h3{
+	font-size: 165% !important;
+   color: #24537C;
+}
+
+.icon{
+   display: block;
+   width: 100%;
+   height: inherit;
+   min-height: 70%;
+   line-height: 75px;
+}
+
+.icon i{
+	font-size: 55px !important;
+	right: 0px !important;
+	margin: 10px -50px 0 0 !important;
+	padding: 0px !important;
+	position: absolute !important;
+}
+
+p {
+	font-size: 40px;
+}
+
+
+#myCarousel > .carousel-inner > .item > .carousel-caption > p 
+,#myCarousel > .carousel-inner > .item > .carousel-caption > h2 {
+   position: relative;
+   display: inline-block;
+   width: 100%;
+   clear: both;
+   left: 0;
+   font-weight: normal;
+   text-shadow: none;
+   font-family: sans-serif;
+}
+
+#myCarousel > .carousel-inner > .item > .carousel-caption > p {
+   font-size: 24px;
+}
+#myCarousel > .carousel-inner > .item > .carousel-caption > h2 {
+   font-size: 50px;
+}
+
+.carousel-control{
+   background: transparent !important;
+}
+
+</style>
+   </head>
+   <body class="nav-md">
+      <div class="container body">
+         <div class="main_container" >
+            {% include "sarg/include//left.html" %}
+         </div>
+      </div>
+      <!-- top navigation -->
+      {% include "sarg/include//top_navegation.html" %}
+      <!-- /top navigation -->
+      <!-- page content -->
+      <div class="right_col" role="main">
+         <div class="">
+            <!-- top tiles -->
+
+                     
+            <div class="row top_tiles">   
+               <div class="col-sm-2 col-xs-12">
+                  <div class="tile-stats tile-stats-home">
+                     <a href="/painel_bugs/bugs">
+                        <div class="icon"><i class="fa fa-bug"></i></div>
+                        <div class="count">{{QUANTIDADE_FALHAS_EM_ABERTO}}</div>
+                        <h3>Bugs</h3>
+                        <p>+ detalhes</p>
+                     </a>
+                  </div>
+               </div>
+               <div class="col-sm-2 col-xs-12">
+                  <div class="tile-stats tile-stats-home">
+                     <a href="/painel_demandas/demandas">
+                        <div class="icon"><i class="fa fa-wrench "></i></div>
+                        <div class="count">{{amount_demandas}}</div>
+                        <h3>Demandas</h3>
+                        <p>+ detalhes</p>
+                     </a>
+                  </div>
+               </div>
+               <div class="col-sm-2 col-xs-12">
+                  <div class="tile-stats tile-stats-home">
+                     <a href="/painel_gmuds/gmuds">
+                        <div class="icon"><i class="fa fa-cogs"></i></div>
+                        <div class="count">{{ amount_gmuds }}</div>
+                        <h3>GMUDs</h3>
+                        <p>+ detalhes</p>
+                     </a>
+                  </div>
+               </div>
+               <div class="col-sm-2 col-xs-12">
+                  <div class="tile-stats tile-stats-home">
+                     <a href="/painel_incidentes/incidentes">
+                        {% if QUANTIDADE_OCORRENCIAS_EM_ABERTO <= 50  %}
+                        <div class="icon"><font color='#1ABB9C'><i class="fa fa-check-circle"></i></font></div>
+                        <div class="count">{{ QUANTIDADE_OCORRENCIAS_EM_ABERTO }}</div>
+                        {% endif %}	
+                        {% if QUANTIDADE_OCORRENCIAS_EM_ABERTO > 50  %}
+                        <div class="icon"><font color='#d9534f'><i class="fa fa-times-circle"></i></font></div>
+                        <div class="count">{{ QUANTIDADE_OCORRENCIAS_EM_ABERTO }}</div>
+                        {% endif %}				
+                        <h3>Incidentes</h3>
+                        <p>+ detalhes</p>			
+                     </a>
+                  </div>
+               </div>
+               <div class="col-sm-2 col-xs-12">
+                  <div class="tile-stats tile-stats-home">
+                     <a href="/painel_oportunidades/oportunidades">
+                        <div class="icon"><i class="fa fa-rocket"></i></div>
+                        <div class="count">{{ amount_oportunidades }}</div>
+                        <h3>Oportunidades</h3>
+                        <p>+ detalhes</p>
+                     </a>
+                  </div>
+               </div>
+               <div class="col-sm-2 col-xs-12">
+                  <div class="tile-stats tile-stats-home">
+                     <a href="/painel_projetos/projetos">
+                        <div class="icon"><i class="fa fa-object-group"></i></div>
+                        <div class="count">{{ amount_projetos }}</div>
+                        <h3>Projetos</h3>
+                        <p>+ detalhes</p>
+                     </a>
+                  </div>
+               </div>
+            </div>			
+			
+		
+
+            <div class="row">
+               <div class="hidden-xs col-sm-12">
+                  <div id="myCarousel" class="carousel slide" data-ride="carousel" data-interval="15000" style="border-radius: 5px;overflow:hidden;">
+                    <!-- Indicators -->
+                    <ol class="carousel-indicators">
+                     {% for value in imagens %}
+                     <li data-target="#myCarousel" data-slide-to="{{ forloop.counter0 }}" {% if forloop.first %}
+                      class="active"{% endif %}></li>
+                     {% endfor %}
+                    </ol>
+
+                    <!-- Wrapper for slides -->
+                    <div class="carousel-inner">
+                     {% for value in imagens %}
+                      <div class="
+                      {% if forloop.first %}
+                          active 
+                      {% endif %} item" style="background:url(/static/{{ value.imagem }}) center center no-repeat;background-size: cover;">	
+                        <img style="height: 450px !important; width: 100% !important;">
+                        <div class="carousel-caption">				
+                          <h2> {{ value.titulo }} </h2>
+                          <p> {{ value.sub_titulo }}</p>
+                        </div>
+                      </div>
+                     {% endfor %}
+                    </div>
+
+                    <!-- Left and right controls -->
+                    <a class="left carousel-control" href="#myCarousel" data-slide="prev">
+                      <span class="glyphicon glyphicon-chevron-left"></span>
+                      <span class="sr-only">Previous</span>
+                    </a>
+                    <a class="right carousel-control" href="#myCarousel" data-slide="next">
+                      <span class="glyphicon glyphicon-chevron-right"></span>
+                      <span class="sr-only">Next</span>
+                    </a>
+                  </div>
+               </div>
+            </div>
+            
+			
+			   </div>
+         </div>
+      </div>
+      <!-- end of weather widget -->
+      <!-- end of weather widget -->
+      </div>
+      </div>
+      </div>
+      </div>
+      <!-- /page content -->
+      <!-- footer content -->
+      {% include "sarg/include//footer.html" %}
+      <!-- /footer content -->
+      </div>
+      </div>
+      </div>
+      </div>
+      </div>
+      <!-- scripts content -->
+      {% include "sarg/include//scripts.html" %}
+<script>
+
+$('#myCarousel .carousel-inner img').css('height',($(window).height()*0.68));
+
+$('#myCarousel').carousel();
+
+      var theme = {
+          color: [
+              '#26B99A', '#34495E', '#99cc00', '#3498DB',
+              '#9B59B6', '#8abb6f', '#759c6a', '#bfd3b7'
+          ],
+
+          title: {
+              itemGap: 8,
+              textStyle: {
+                  fontWeight: 'normal',
+                  color: '#408829'
+              }
+          },
+
+          dataRange: {
+              color: ['#1f610a', '#97b58d']
+          },
+
+          toolbox: {
+              color: ['#408829', '#408829', '#408829', '#408829']
+          },
+
+          tooltip: {
+              backgroundColor: 'rgba(0,0,0,0.5)',
+              axisPointer: {
+                  type: 'line',
+                  lineStyle: {
+                      color: '#408829',
+                      type: 'dashed'
+                  },
+                  crossStyle: {
+                      color: '#408829'
+                  },
+                  shadowStyle: {
+                      color: 'rgba(200,200,200,0.3)'
+                  }
+              }
+          },
+
+          dataZoom: {
+              dataBackgroundColor: '#eee',
+              fillerColor: 'rgba(64,136,41,0.2)',
+              handleColor: '#408829'
+          },
+          grid: {
+              borderWidth: 0
+          },
+
+          categoryAxis: {
+              axisLine: {
+                  lineStyle: {
+                      color: '#408829'
+                  }
+              },
+              splitLine: {
+                  lineStyle: {
+                      color: ['#eee']
+                  }
+              }
+          },
+
+          valueAxis: {
+              axisLine: {
+                  lineStyle: {
+                      color: '#408829'
+                  }
+              },
+              splitArea: {
+                  show: true,
+                  areaStyle: {
+                      color: ['rgba(250,250,250,0.1)', 'rgba(200,200,200,0.1)']
+                  }
+              },
+              splitLine: {
+                  lineStyle: {
+                      color: ['#eee']
+                  }
+              }
+          },
+          timeline: {
+              lineStyle: {
+                  color: '#408829'
+              },
+              controlStyle: {
+                  normal: {color: '#408829'},
+                  emphasis: {color: '#408829'}
+              }
+          },
+
+          k: {
+              itemStyle: {
+                  normal: {
+                      color: '#68a54a',
+                      color0: '#a9cba2',
+                      lineStyle: {
+                          width: 1,
+                          color: '#408829',
+                          color0: '#86b379'
+                      }
+                  }
+              }
+          },
+          map: {
+              itemStyle: {
+                  normal: {
+                      areaStyle: {
+                          color: '#ddd'
+                      },
+                      label: {
+                          textStyle: {
+                              color: '#c12e34'
+                          }
+                      }
+                  },
+                  emphasis: {
+                      areaStyle: {
+                          color: '#99d2dd'
+                      },
+                      label: {
+                          textStyle: {
+                              color: '#c12e34'
+                          }
+                      }
+                  }
+              }
+          },
+          force: {
+              itemStyle: {
+                  normal: {
+                      linkStyle: {
+                          strokeColor: '#408829'
+                      }
+                  }
+              }
+          },
+          chord: {
+              padding: 4,
+              itemStyle: {
+                  normal: {
+                      lineStyle: {
+                          width: 1,
+                          color: 'rgba(128, 128, 128, 0.5)'
+                      },
+                      chordStyle: {
+                          lineStyle: {
+                              width: 1,
+                              color: 'rgba(128, 128, 128, 0.5)'
+                          }
+                      }
+                  },
+                  emphasis: {
+                      lineStyle: {
+                          width: 1,
+                          color: 'rgba(128, 128, 128, 0.5)'
+                      },
+                      chordStyle: {
+                          lineStyle: {
+                              width: 1,
+                              color: 'rgba(128, 128, 128, 0.5)'
+                          }
+                      }
+                  }
+              }
+          },
+          gauge: {
+              startAngle: 225,
+              endAngle: -45,
+              axisLine: {
+                  show: true,
+                  lineStyle: {
+                      color: [[0.2, '#86b379'], [0.8, '#68a54a'], [1, '#408829']],
+                      width: 8
+                  }
+              },
+              axisTick: {
+                  splitNumber: 10,
+                  length: 12,
+                  lineStyle: {
+                      color: 'auto'
+                  }
+              },
+              axisLabel: {
+                  textStyle: {
+                      color: 'auto'
+                  }
+              },
+              splitLine: {
+                  length: 18,
+                  lineStyle: {
+                      color: 'auto'
+                  }
+              },
+              pointer: {
+                  length: '90%',
+                  color: 'auto'
+              },
+              title: {
+                  textStyle: {
+                      color: '#333'
+                  }
+              },
+              detail: {
+                  textStyle: {
+                      color: 'auto'
+                  }
+              }
+          },
+          textStyle: {
+              fontFamily: 'Arial, Verdana, sans-serif'
+          }
+      };
+
+      var echartBar = echarts.init(document.getElementById('mainb2'), theme);
+
+echartBar.setOption({
+  title: {
+    text: 'ABR Telecom',
+    subtext: ''
+  },
+  tooltip: {
+    trigger: 'axis'
+  },
+  legend: {
+    data: ['Corretiva', 'Demanda', 'Evolutiva', 'Manutencao Interna', 'Manutencao Preventiva']
+  },
+  toolbox: {
+    show: false
+  },
+  calculable: false,
+  xAxis: [{
+    type: 'category',
+    data: ['BDA', 'CADUP', 'GCC', 'PGMC', 'PORTABILIDADE']
+  }],
+  yAxis: [{
+    type: 'value'
+  }],
+  series: [{
+    name: 'Corretiva',
+    type: 'bar',
+    data: ['8', '1', '17', '0', '2'],
+    markPoint: {
+      data: [{
+        type: 'max',
+        name: 'Quantidade'
+      }, {
+        type: 'min',
+        name: 'Quantidade'
+      }]
+    },
+    markLine: {
+      data: [{
+        type: 'average',
+        name: 'Quantidade'
+      }]
+    }
+  },
+{
+    name: 'Demanda',
+    type: 'bar',
+    data: ['1', '1', '10', '5', '17'],
+    markPoint: {
+      data: [{
+        type: 'max',
+        name: 'Quantidade'
+      }, {
+        type: 'min',
+        name: 'Quantidade'
+      }]
+    },
+    markLine: {
+      data: [{
+        type: 'average',
+        name: 'Quantidade'
+      }]
+    }
+  },
+{
+    name: 'Evolutiva',
+    type: 'bar',
+    data: ['17', '0', '6', '18', '26', ],
+    markPoint: {
+      data: [{
+        type: 'max',
+        name: 'Quantidade'
+      }, {
+        type: 'min',
+        name: 'Quantidade'
+      }]
+    },
+    markLine: {
+      data: [{
+        type: 'average',
+        name: 'Quantidade'
+      }]
+    }
+  },
+{
+    name: 'Manutencao Interna',
+    type: 'bar',
+    data: ['0','0', '2', '3', '26'],
+    markPoint: {
+      data: [{
+        type: 'max',
+        name: 'Quantidade'
+      }, {
+        type: 'min',
+        name: 'Quantidade'
+      }]
+    },
+    markLine: {
+      data: [{
+        type: 'average',
+        name: 'Quantidade'
+      }]
+    }
+  },
+{
+    name: 'Manutencao Preventiva',
+    type: 'bar',
+    data: ['2', '2', '2', '2', '15'],
+    markPoint: {
+      data: [{
+        type: 'max',
+        name: 'Quantidade'
+      }, {
+        type: 'min',
+        name: 'Quantidade'
+      }]
+    },
+    markLine: {
+      data: [{
+        type: 'average',
+        name: 'Quantidade'
+      }]
+    }
+  }]
+});
+    </script>
+      <!-- /scripts content -->
+   </body>
+</html>

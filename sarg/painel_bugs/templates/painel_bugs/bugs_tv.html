@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>   
+      {% include "sarg/include/header.html" %}
+	<style>
+	div.border_panel {
+		border-style: solid !important;
+		border-width: 2px !important;
+		border-color: black !important;	
+	}
+	p.title {
+		font-size: 50px; 
+		color: black;"
+	}
+	</style> 	  
+      <title>Bugs</title>
+   </head> 
+   <body class="nav-md" style="background-color: white">
+            <div class="x_panel">
+               <div class="x_title" style="border-bottom-color:black;">
+				<p style="font-size: 60px; color: black;" >PAINEL DE BUGS<span style="font-size: 40px; color: black;"> &Uacuteltima atualiza&ccedil;&atilde;o: {{data}}</span></p>				
+               </div>
+			   
+		<div class="row">
+			<div class="col-xs-12 tile_count" align="center" style="color: black;">
+			
+				<div class="col-xs-12 col-sm-6 tile_stats_count">
+					<span class="count" style="font-size: 50px">
+						<i class="fa fa-bug"></i> 
+					</span>
+					<span style="font-size: 50px">
+						Total Encerrados: <span style="font-size: 50px; font-weight: bold;">{{TOTAL_FALHAS_NOS_ULTIMOS_6_MESES}}</span>
+					</span>						
+				</div>				
+				
+				<div class="col-xs-12 col-sm-6 tile_stats_count" style="color:#d9534f;">
+					<span class="count" style="font-size: 50px;">
+						<i class="fa fa-bug"></i> 
+					</span>
+					<span style="font-size: 50px;">
+						Total em Aberto: <span style="font-size: 50px; font-weight: bold;">{{TOTAL_FALHAS_EM_ABERTO}}</span>
+					</span>						
+				</div>
+			</div>
+		</div>			   
+		<div class="row" >
+				
+			<div class="col-sm-6 col-xs-12">
+                <div class="x_panel" style=" border-style:solid;  border-color:black;">
+                  <div class="x_title" align="center">
+                    <p style="font-size: 50px; color: black;">Encerrados nos Últimos 6 Meses</p> 
+                    <div class="clearfix"></div>
+                  </div>
+                  <div class="x_content">			
+					<div id="container1" style="width: auto; height: 650px; margin: 0 auto"></div>
+                  </div>
+                </div>
+            </div>
+			
+			<div class="col-sm-6 col-xs-12">
+                <div class="x_panel" style=" border-style:solid; border-color:black;">
+                  <div class="x_title" align="center">
+                    <p style="font-size: 50px; color: black;">Em Aberto - {{data|date:"M/Y"}}</p>
+                    <div class="clearfix"></div>
+                  </div>
+                  <div class="x_content">			
+					<div id="container" style="width: auto; height: 650px; margin: 0 auto"></div>
+                  </div>
+                </div>
+            </div>		
+			
+		</div>
+			</div>		
+      <!-- scripts content -->
+      {% include "sarg/include/scripts.html" %}
+      <script>
+         Highcharts.chart('container1', {
+             chart: {
+                 type: 'line',
+				 spacingTop: 20,
+             },
+             title: {
+                 text: ''
+             },
+             exporting: {
+                enabled: false
+             },
+             subtitle: {
+                 text: '',
+                 style: {
+                     fontSize: '35px',
+                     fontFamily: 'Verdana, sans-serif',
+					 color: 'black',
+                 }
+             },
+             xAxis: {
+                 categories: [{% for VALUE in FALHAS_ENCERRADAS_NOS_ULTIMOS_6_MESES %}'{{VALUE.ANO_MES}}',{% endfor %}],
+                 labels: {
+                     rotation: -70,
+                     style: {
+                         fontSize: '35px',
+                         fontFamily: 'Verdana, sans-serif',
+						 color: 'black',
+                     }
+                 }
+             },
+             yAxis: {
+                 title: {
+                     text: '',
+					 fontSize: '35px',
+					 color: 'black',
+
+                 },
+                 labels: {
+                     rotation: -0,
+                     style: {
+                         fontSize: '35px',
+                         fontFamily: 'Verdana, sans-serif',
+						 color: 'black',
+                     }
+                 }
+             },
+             legend: {
+                 enabled: false
+             },
+             tooltip: {
+                 pointFormat: ''
+             },			 
+             plotOptions: {
+                 line: {
+                     dataLabels: {
+                         enabled: true,
+						 style: {
+						 	fontSize: '35px',
+						 	fontFamily: 'Verdana, sans-serif',
+							color: 'black',
+						 }
+                     },
+                     enableMouseTracking: false
+                 }
+             },
+             series: [{
+                 name: 'Quantidade de Falhas',
+				 padding: 100,
+         		 color: '#1ABB9C',
+				 fontSize: '35px',
+                 data: [{% for VALUE in FALHAS_ENCERRADAS_NOS_ULTIMOS_6_MESES %}{{VALUE.QUANTIDADE}},{% endfor %}],
+					
+             }]
+
+         });
+         
+         
+         Highcharts.chart('container', {
+             chart: {
+                 type: 'column',
+				 spacingTop: 20,
+             },
+             title: {
+                 text: ''
+             },
+             exporting: {
+                enabled: false
+             },			 
+			 
+             subtitle: {
+                 text: '',
+                 style: {
+                     fontSize: '35px',
+                     fontFamily: 'Verdana, sans-serif',
+					 color: 'black',
+                 }
+             },
+			 
+			 
+             xAxis: {
+                 type: 'category',
+                 labels: {
+                     rotation: -70,
+                     style: {
+                         fontSize: '35px',
+                         fontFamily: 'Verdana, sans-serif',
+						 color: 'black',
+                     }
+                 }
+             },
+             yAxis: {
+                 min: 0,
+                 tickInterval: 1,
+                 title: {
+                     text: ''
+                 },
+                 labels: {
+                     rotation: -0,
+                     style: {
+                         fontSize: '35px',
+                         fontFamily: 'Verdana, sans-serif',
+						 color: 'black',
+                     }
+                 }
+             },
+             legend: {
+                 enabled: false
+             },
+             tooltip: {
+                 pointFormat: ''
+             },
+             series: [{
+                 name: 'Quantidade de Falhas',
+         		color: '#1ABB9C',
+                 data: [
+				 	 {% for VALUE in FALHAS_EM_ABERTO %}
+					 ['{{VALUE.tipo_servico}}', {{VALUE.total}}],				 
+					 {% endfor %}
+                 ],
+                 dataLabels: {
+                     enabled: true,
+                     rotation: -360,
+                     align: 'center',
+         			color: 'black',
+                     y: -5, // 10 pixels down from the top
+                     style: {
+                         fontSize: '35px',
+                         fontFamily: 'Verdana, sans-serif'
+                     }
+                 }
+             }]
+         });
+      </script>
+      <!-- /scripts content -->
+   </body>
+</html>
+

@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+   <head>
+      {% include "sarg/include/header.html" %}
+      <title>Demandas</title>
+   </head>
+   <body class="nav-md" style="background-color: white">
+      <div class="x_panel">
+         <div class="x_title" style="border-bottom-color:black;">
+            <p style="font-size: 60px; color: black;" >PAINEL DE DEMANDAS<span style="font-size: 40px; color: black;"> &Uacuteltima atualiza&ccedil;&atilde;o: {{data}}</span></p>
+         </div>
+         <div class="row">
+            <div class="col-xs-12 tile_count" align="center" style="color: black;">
+               <div class="col-xs-12 col-sm-4 tile_stats_count">
+                  <span class="count" style="font-size: 50px">
+                  <i class="fa fa-wrench"></i> 
+                  </span>
+                  <span style="font-size: 50px">
+                  Total em Aberto: <span style="font-size: 50px; font-weight: bold;">{{TOTAL_DEMANDAS}}</span>
+                  </span>						
+               </div>
+               <div class="col-xs-12 col-sm-4 tile_stats_count">
+                  <span class="count" style="font-size: 50px">
+                  <i class="fa fa-wrench"></i> 
+                  </span>
+                  <span style="font-size: 50px">
+                  Total Externas: <span style="font-size: 50px; font-weight: bold;">{{QTD_DEMANDAS_EXTERNAS}}</span>
+                  </span>						
+               </div>
+               <div class="col-xs-12 col-sm-4 tile_stats_count">
+                  <span class="count" style="font-size: 50px">
+                  <i class="fa fa-wrench"></i> 
+                  </span>
+                  <span style="font-size: 50px">
+                  Total Internas: <span style="font-size: 50px; font-weight: bold;">{{QTD_DEMANDAS_INTERNAS}}</span>
+                  </span>						
+               </div>
+            </div>
+         </div>
+         <div class="row" align="center">
+            <div class="col-xs-12" >
+               <div class="x_panel" style=" border-style:solid; border-width: 2px; border-color:black;">
+                  <div class="x_content">
+                     <div id="container" style="height: 738px; margin: 0 auto"></div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+      <!-- scripts content -->
+      {% include "sarg/include/scripts.html" %}
+      <script>
+         Highcharts.chart('container', {
+            chart: {
+               type: 'column',
+               spacingTop: 40,
+               heigth: 400
+            },
+            title: {
+               text: ''
+            },
+            exporting: {
+               enabled: false
+            },         
+            subtitle: {
+               text: '',
+               style: {
+                  fontSize: '35px',
+                  fontFamily: 'Verdana, sans-serif'
+               }
+            },
+         
+            xAxis: {
+               labels: {
+                  rotation: -70,
+                  style: {
+                     fontSize: '30px',
+                     color: 'black',
+                     fontFamily: 'Verdana, sans-serif',
+                     width:'200px',// not work for text without empty space
+                     wordWrap: 'break-word',//no use		
+                  },
+                  formatter: function () {//use formatter to break word.
+                     return '<div align="center" style="word-wrap: break-word;word-break: break-all;width:50px">' + this.value + '</div>';
+                  }
+               },
+               categories: [{% for VALUE in DEMANDAS_SERVICOS %}'{{VALUE.servico}}',{% endfor %}]
+            },
+            yAxis: {
+               min: 0,
+               tickInterval: 10,
+               title: {
+                  text: ''
+               },
+               labels: {
+                  rotation: -0,
+                  style: {
+                     fontSize: '35px',
+                     fontFamily: 'Verdana, sans-serif'
+                  }
+               },
+               stackLabels: {
+                  enabled: true,
+                  style: {
+                     fontWeight: 'bold',
+         				fontSize: '35px',
+                     color: (Highcharts.theme && Highcharts.theme.textColor) || 'Verdana, sans-serif'
+                  }
+               }
+            },
+            legend: {
+               symbolHeight: 30,
+               symbolPadding: 20,
+               itemStyle: {
+                  font: '35px Verdana',
+               },			 
+               align: 'right',
+               x: -30,
+               verticalAlign: 'top',
+               y: -5,
+               floating: true,
+               backgroundColor: (Highcharts.theme && Highcharts.theme.background2) || 'white',
+               borderColor: '#CCC',
+               fontSize: '35px',
+               shadow: false
+            },
+            tooltip: {
+               headerFormat: '<b>{point.x}</b><br/>',
+               pointFormat: '{series.name}: {point.y}<br/>Total: {point.stackTotal}'
+            },
+            plotOptions: {
+               column: {
+                  stacking: 'normal',
+                  dataLabels: {
+                     enabled: true,
+                     allowOverlap: true,
+                     formatter:function() {
+                        if(this.y != 0) {
+                           return this.y;
+                        }
+                     },		 
+                     style: {
+                        fontSize: '35px',
+                        fontFamily: 'Verdana, sans-serif'
+                     },
+                     color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'white'
+                  }
+               }
+            },
+            series: [{
+               name: 'Internas', 
+         		color: '#73879C',
+               data: [{% for VALUE in DEMANDAS_SERVICOS %}{{VALUE.INTERNAS}},{% endfor %}]
+            }, {
+               name: 'Externas',
+         		color: '#1ABB9C',
+               data: [{% for VALUE in DEMANDAS_SERVICOS %}{{VALUE.EXTERNAS}},{% endfor %}]
+            }]
+         });
+      </script>
+      <!-- /scripts content -->
+   </body>
+</html>
