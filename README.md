@@ -46,6 +46,17 @@ This project contains the following modules.
   <li>Pillow==5.2.0</li>
 </ul>
 
+<h2>Creating Tables, Views and Functions for SARG</h2>
+
+<pre>
+sudo docker exec -it mysql bash
+mysql -uroot -p sarg < /tmp/generateTablesViewsSarg.sql
+Enter password:
+ERROR 1065 (42000) at line 381: Query was empty
+root@bb77ac860c80:/#
+</pre>
+
+
 <h2>Creating Super User Django Admin</h2>
 
 <pre>
